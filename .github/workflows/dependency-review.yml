@@ -1,0 +1,24 @@
+name: "Dependency Review"
+
+# Scans dependency manifest changes in pull requests and fails the check if a PR
+# introduces a dependency with a known vulnerability or a disallowed license.
+# Docs: https://docs.github.com/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail the PR on moderate-or-higher severity vulnerabilities.
+          fail-on-severity: moderate

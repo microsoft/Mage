@@ -9,7 +9,7 @@
 # (plain `pip` works the same way.)
 
 # --- core numerics / DL ---
-torch==2.10.0
+torch==2.13.0
 torchvision==0.25.0         # reference-image resize in the edit path
 numpy==2.4.3                # used by the test/benchmark scripts
 

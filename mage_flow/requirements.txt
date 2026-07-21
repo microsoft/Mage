@@ -30,7 +30,7 @@ huggingface_hub>=0.20       # snapshot_download for MageFlowPipeline.from_pretra
 # --- tensor ops / config / io / logging ---
 einops==0.8.2
 pydantic==2.12.5
-pillow==12.1.1
+pillow==12.3.0
 loguru==0.7.3
 typing_extensions==4.15.0   # only needed on Python < 3.11 (fallback for typing.Unpack)
 

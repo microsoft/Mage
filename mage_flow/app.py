@@ -42,6 +42,7 @@ EDIT_MODELS = {
 }
 
 DEVICE = "cuda"
+TEXT_DEVICE: str | None = None
 _CACHE: dict[str, MageFlowPipeline] = {}
 
 
@@ -56,7 +57,8 @@ def _get_pipe(repo: str) -> MageFlowPipeline:
         raise gr.Error("No model specified.")
     if repo not in _CACHE:
         try:
-            _CACHE[repo] = MageFlowPipeline.from_pretrained(repo, device=DEVICE)
+            _CACHE[repo] = MageFlowPipeline.from_pretrained(
+                repo, device=DEVICE, text_device=TEXT_DEVICE)
         except Exception as e:  # noqa: BLE001
             raise gr.Error(f"Failed to load model '{repo}': {type(e).__name__}: {e}")
     return _CACHE[repo]
@@ -178,9 +180,12 @@ def build_ui():
 
 
 def main():
-    global DEVICE
+    global DEVICE, TEXT_DEVICE
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--text-device", default=None,
+                    help="device for the text encoder (default: same as --device; "
+                         "e.g. --device cuda:0 --text-device cuda:1 splits across two GPUs)")
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--port", type=int, default=7860)
     ap.add_argument("--share", action="store_true")
@@ -188,6 +193,7 @@ def main():
                     help="comma-separated repo ids / paths to load at startup (else lazy)")
     args = ap.parse_args()
     DEVICE = args.device
+    TEXT_DEVICE = args.text_device
     if args.preload:
         for repo in args.preload.split(","):
             _get_pipe(repo.strip())

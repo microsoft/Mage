@@ -8,8 +8,19 @@ from loguru import logger
 from safetensors.torch import load_file
 from safetensors.torch import load_file as load_sft
 from torch import Tensor
+from typing import Tuple
+import torch.nn.functional as F
 
 from .mage_flow import MageFlow, MageFlowParams
+
+
+def pad_to_patch_multiple(x: torch.Tensor, patch_size: int = 16) -> Tuple[torch.Tensor, Tuple[int, int]]:
+    H, W = x.shape[-2], x.shape[-1]
+    pad_h = (patch_size - H % patch_size) % patch_size
+    pad_w = (patch_size - W % patch_size) % patch_size
+    if pad_h > 0 or pad_w > 0:
+        x = F.pad(x, (0, pad_w, 0, pad_h), mode="reflect")
+    return x, (pad_h, pad_w)
 
 
 CRITICAL_LAYERS = {"img_in.weight", "txt_in.weight", "proj_out.weight", "final_layer.linear.weight"}
@@ -38,8 +49,8 @@ def get_noise(
     return torch.randn(
         num_samples,
         channel,
-        math.ceil(height / 16),
-        math.ceil(width / 16),
+        height // 16,
+        width // 16,
         device=device,
         dtype=dtype,
         generator=torch.Generator(device=device).manual_seed(seed),
@@ -51,8 +62,8 @@ def unpack(x: Tensor, height: int, width: int) -> Tensor:
     return rearrange(
         x,
         "b (h w) c -> b c h w",
-        h=math.ceil(height / 16),
-        w=math.ceil(width / 16),
+        h=height // 16,
+        w=width // 16,
     )
 
 

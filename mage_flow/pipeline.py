@@ -45,7 +45,12 @@ def build_scheduler(num_steps: int, device=None, shift: float = 6.0):
     """
     scheduler = FlowMatchEulerDiscreteScheduler(
         num_train_timesteps=1000, shift=shift, use_dynamic_shifting=False)
-    base_sigmas = torch.linspace(1.0, 1.0 / num_steps, num_steps).tolist()
+    if num_steps <= 8:
+        import math
+        steps = torch.linspace(0, math.pi / 2, num_steps + 1)
+        base_sigmas = (1.0 - torch.sin(steps[:-1])).tolist()
+    else:
+        base_sigmas = torch.linspace(1.0, 1.0 / num_steps, num_steps).tolist()
     scheduler.set_timesteps(sigmas=base_sigmas, device=device)
     return scheduler
 
@@ -127,7 +132,7 @@ def _decode_one(model, tokens, height, width, dev):
     return Image.fromarray(out[0])
 
 
-def _build_pack_ctx(img_ids, img_cu, img_shapes, img_lens, txt, txt_cu, txt_mask, vec,
+def _build_pack_ctx(transformer, img_ids, img_cu, img_shapes, img_lens, txt, txt_cu, txt_mask, vec,
                     neg_txt, neg_cu, neg_mask, neg_vec, cfg, renormalization, batch_cfg, device):
     """Precompute the static per-step transformer inputs for a packed batch.
 
@@ -157,10 +162,28 @@ def _build_pack_ctx(img_ids, img_cu, img_shapes, img_lens, txt, txt_cu, txt_mask
         "neg_max": int((neg_cu[1:] - neg_cu[:-1]).max().item()),
     })
     if batch_cfg:
-        # Duplicate image segments (cond then uncond) and concat pos+neg text.
-        d_txt = torch.cat([txt, neg_txt], dim=1)
         pos_lens = (txt_cu[1:] - txt_cu[:-1]).tolist()
         neg_lens = (neg_cu[1:] - neg_cu[:-1]).tolist()
+        N = sum(img_lens) * 2 + sum(pos_lens) + sum(neg_lens)
+        
+        try:
+            heads = getattr(transformer, "num_heads", 28)
+            # DIT often uses hidden_size // num_heads for head_dim
+            head_dim = getattr(transformer, "head_dim", getattr(transformer, "hidden_size", 3584) // heads)
+            bytes_req = N ** 2 * heads * head_dim * 8
+            
+            if device.type == "cuda":
+                free_mem, _ = torch.cuda.mem_get_info(device)
+                if bytes_req > 0.7 * free_mem:
+                    from loguru import logger
+                    logger.warning(f"Estimated batch_cfg VRAM ({bytes_req / 1e9:.2f}GB) exceeds 70% free. Disabling batch_cfg.")
+                    batch_cfg = False
+        except Exception:
+            pass
+
+    if batch_cfg:
+        # Duplicate image segments (cond then uncond) and concat pos+neg text.
+        d_txt = torch.cat([txt, neg_txt], dim=1)
         ctx.update({
             "d_img_ids": torch.cat([img_ids, img_ids], dim=1),
             "d_img_cu": _lens_to_cu(list(img_lens) + list(img_lens), device),
@@ -211,8 +234,9 @@ def _velocity(transformer, img, ctx, sigma):
         # CFG renormalization: rescale the guided velocity per token back to the
         # conditional velocity's norm (reduces oversaturation at high cfg).
         comb = unc + cfg * (cond - unc)
-        return comb * (torch.norm(cond, dim=-1, keepdim=True) /
-                       (torch.norm(comb, dim=-1, keepdim=True) + 1e-6))
+        cond_norm = torch.norm(cond.float(), dim=-1, keepdim=True).mean(dim=1, keepdim=True)
+        comb_norm = torch.norm(comb.float(), dim=-1, keepdim=True).mean(dim=1, keepdim=True)
+        return comb * (cond_norm / (comb_norm + 1e-6))
     return unc + cfg * (cond - unc)
 
 
@@ -335,7 +359,7 @@ def generate_images(model, prompts, neg_prompts=None, seeds=None, steps=30, cfg=
         txt, txt_cu, txt_mask, vec = _slice_packed(txt_flat, vec_all, lens_t, 0, na, dev)
         neg_txt = neg_cu = neg_mask = neg_vec = None
 
-    ctx = _build_pack_ctx(img_ids, img_cu, img_shapes, lens, txt, txt_cu, txt_mask, vec,
+    ctx = _build_pack_ctx(model.transformer, img_ids, img_cu, img_shapes, lens, txt, txt_cu, txt_mask, vec,
                           neg_txt, neg_cu, neg_mask, neg_vec, cfg, renormalization, batch_cfg, dev)
     scheduler = _get_scheduler(model, steps, device, static_shift)
     for si, t in enumerate(scheduler.timesteps):
@@ -545,7 +569,7 @@ def generate_edits(model, prompts, ref_images, neg_prompts=None, seeds=None, ste
         txt, txt_cu, txt_mask, vec = _slice_packed(txt_flat, vec_all, lens_t, 0, na, dev)
         neg_txt = neg_cu = neg_mask = neg_vec = None
 
-    ctx = _build_pack_ctx(img_ids, img_cu, img_shapes, samp_lens, txt, txt_cu, txt_mask, vec,
+    ctx = _build_pack_ctx(model.transformer, img_ids, img_cu, img_shapes, samp_lens, txt, txt_cu, txt_mask, vec,
                           neg_txt, neg_cu, neg_mask, neg_vec, cfg, renormalization, batch_cfg, dev)
     scheduler = _get_scheduler(model, steps, device, static_shift)
     for si, t in enumerate(scheduler.timesteps):
@@ -612,7 +636,7 @@ def invert_to_noise(model, z0, height, width, steps=30, device="cuda",
     # Empty-prompt conditioning, no negative branch, cfg=1 (single forward).
     txt_flat, vec_all, lens_t = _encode_texts_packed(model, [prompt], template, drop_idx, dev)
     txt, txt_cu, txt_mask, vec = _slice_packed(txt_flat, vec_all, lens_t, 0, 1, dev)
-    ctx = _build_pack_ctx(img_ids, img_cu, img_shapes, lens, txt, txt_cu, txt_mask, vec,
+    ctx = _build_pack_ctx(model.transformer, img_ids, img_cu, img_shapes, lens, txt, txt_cu, txt_mask, vec,
                           None, None, None, None, 1.0, False, False, dev)
 
     scheduler = _get_scheduler(model, steps, device, static_shift)

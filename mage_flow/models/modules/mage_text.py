@@ -231,8 +231,10 @@ def _full_output_mode(hf):
                 hf.set_output_mode(prev_mode)
             if prev_skip is not None:
                 hf._skip_lm_head = prev_skip
-        except Exception:  # noqa: BLE001
-            pass
+        except Exception as e:
+            from loguru import logger
+            logger.error(f"Failed to restore text model output mode: {e}")
+            raise
 
 
 def check_edit(model, prompt: str, ref_images, max_new_tokens: int = 192) -> FilterVerdict:

@@ -335,6 +335,7 @@ mage-flow-edit --prompt "Replace the background with a field of sunflowers" "ble
 
 ```bash
 mage-flow-app                     # serve on http://0.0.0.0:7860  (or: python -m mage_flow.app)
+mage-flow-app --device cuda:0 --text-device cuda:1 # split to two GPUs
 ```
 
 A web UI with **Text → Image** and **Image Edit** tabs; models load lazily on first use and are cached. Presets default to the `microsoft/Mage-Flow*` **Hugging Face repos** (downloaded + cached on first use); set `MAGEFLOW_HF_DIR` to load local checkpoint dirs instead.
@@ -346,6 +347,7 @@ A web UI with **Text → Image** and **Image Edit** tabs; models load lazily on 
 | `--host`    | `0.0.0.0` | bind address                                                                |
 | `--port`    | `7860`    | port                                                                        |
 | `--device`  | `cuda`    | inference device                                                            |
+| `--text-device`  | `cuda`    | text encoding device                                                            |
 | `--share`   | off         | create a public Gradio share link                                           |
 | `--preload` | *(lazy)*  | comma-separated repo ids / paths to load at startup instead of on first use |
 

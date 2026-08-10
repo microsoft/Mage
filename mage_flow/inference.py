@@ -51,6 +51,9 @@ def _add_common_args(p):
     p.add_argument("--static_shift", type=float, default=None,
                    help="override scheduler shift (default: repo scheduler_config.json, 6.0)")
     p.add_argument("--device", default="cuda")
+    p.add_argument("--text-device", default=None,
+                   help="device for the text encoder (default: same as --device; "
+                        "e.g. --device cuda:0 --text-device cuda:1 splits across two GPUs)")
     p.add_argument("--out", default="./outputs")
 
 
@@ -86,7 +89,7 @@ def main():
     args = p.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
-    pipe = MageFlowPipeline.from_pretrained(args.model_path, args.device)
+    pipe = MageFlowPipeline.from_pretrained(args.model_path, args.device, args.text_device)
     n = len(args.prompt)
     imgs = pipe.generate(
         args.prompt,
@@ -133,7 +136,7 @@ def main_edit():
         p.error(f"--ref count ({len(args.ref)}) must match --prompt count ({len(args.prompt)})")
 
     os.makedirs(args.out, exist_ok=True)
-    pipe = MageFlowPipeline.from_pretrained(args.model_path, args.device)
+    pipe = MageFlowPipeline.from_pretrained(args.model_path, args.device, args.text_device)
     n = len(args.prompt)
     # Each --ref token is one prompt's reference(s); commas split multi-image refs.
     ref_images = [[s.strip() for s in r.split(",") if s.strip()] for r in args.ref]

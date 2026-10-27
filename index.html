@@ -1,30 +1,30 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="description" content="Mage: A Lightweight, Research-Friendly Multimodal Model Family">
-  <meta name="keywords" content="Mage, Mage-VL, Mage-Flow, multimodal, vision-language, text-to-image, image editing">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" sizes="180x180" href="static/imgs/favicon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="static/imgs/favicon.png">
-  <title>Mage — A Lightweight, Research-Friendly Multimodal Model Family</title>
+<meta charset="utf-8"/>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-
-  <style>
+<meta content="Mage: A Lightweight, Research-Friendly Multimodal Model Family" name="description"/>
+<meta content="Mage, Mage-VL, Mage-Flow, Mage-VL-Cowork, multimodal, vision-language, text-to-image, image editing, computer use" name="keywords"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="static/imgs/favicon.png" rel="icon" sizes="180x180" type="image/png"/>
+<link href="static/imgs/favicon.png" rel="apple-touch-icon" sizes="180x180"/>
+<title>Mage — A Lightweight, Research-Friendly Multimodal Model Family</title>
+<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet"/>
+<link href="static/css/bulma.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" rel="stylesheet">
+<link href="static/css/index.css" rel="stylesheet"/>
+<style>
     /* ── Family hub cards ── */
     .hub-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 26px;
-      max-width: 1000px;
+      max-width: 1180px;
       margin: 0 auto;
     }
-    @media (max-width: 760px) { .hub-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 960px) { .hub-grid { grid-template-columns: 1fr; } }
 
     .hub-card {
       display: flex;
@@ -51,6 +51,9 @@
     }
     .hub-card[data-accent="flow"]  { --accent: #7c3aed; }
     .hub-card[data-accent="vl"]    { --accent: #0d9488; }
+    .hub-card[data-accent="cowork"] { --accent: #0078d4; }
+    .hub-grid { padding: 0 20px; }
+    .hub-name { font-size: 1.8rem; }
 
     .hub-tag {
       display: inline-block;
@@ -70,86 +73,86 @@
     .hub-card:hover .hub-enter .arrow { transform: translateX(5px); }
 
     .family-links a { margin: 4px 6px; }
+    .hub-grid .hub-tag { font-size: .65rem; letter-spacing: .08em; }
   </style>
-</head>
+</link></head>
 <body>
-
 <!-- ══ HERO ══ -->
 <section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Mage</h1>
-          <p class="is-size-4" style="color:#475569; font-weight:600; margin-bottom:1rem">
+<div class="hero-body">
+<div class="container is-max-desktop">
+<div class="columns is-centered">
+<div class="column has-text-centered">
+<h1 class="title is-1 publication-title">Mage</h1>
+<p class="is-size-4" style="color:#475569; font-weight:600; margin-bottom:1rem">
             A Lightweight, Research-Friendly Multimodal Model Family
           </p>
-          <div class="is-size-6 publication-authors"><span class="author-block"><b>Microsoft Mage Team</b></span></div>
-          <div class="family-links" style="margin-top:1rem">
-            <span class="link-block">
-              <a href="https://github.com/microsoft/Mage" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                <span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a></span>
-            <span class="link-block">
-              <a href="https://huggingface.co/collections/microsoft/mage" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                <span class="icon"><p style="font-size:18px">🤗</p></span><span>Models</span></a></span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="is-size-6 publication-authors"><span class="author-block"><b>Microsoft Mage Team</b></span></div>
+<div class="family-links" style="margin-top:1rem">
+<span class="link-block">
+<a class="external-link button is-normal is-rounded is-dark" href="https://github.com/microsoft/Mage" target="_blank">
+<span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a></span>
+<span class="link-block">
+<a class="external-link button is-normal is-rounded is-dark" href="https://huggingface.co/collections/microsoft/mage" target="_blank">
+<span class="icon"><p style="font-size:18px">🤗</p></span><span>Models</span></a></span>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ══ FAMILY INTRO ══ -->
 <section class="section" style="padding-top:0">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-four-fifths has-text-centered content">
-        <img src="static/imgs/mage-model-cover.png" style="width:100%;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.1);margin-bottom:1.4rem" alt="Mage family" loading="lazy"/>
-        <p style="font-size:1.05rem;color:#334155;line-height:1.75">
-          <strong>Mage</strong> is a family of lightweight, research-friendly multimodal models built at a fixed <strong>4B-parameter</strong> budget, sharing a <em>codec-aligned efficiency</em> philosophy — <em>spend representation capacity where the signal is</em> — across both visual <strong>understanding</strong> and <strong>generation</strong>. Both models are compact enough to train, fine-tune, and deploy on modest hardware, yet remain competitive with much larger open systems.
+<div class="container is-max-desktop">
+<div class="columns is-centered">
+<div class="column is-four-fifths has-text-centered content">
+<img alt="Mage family" loading="lazy" src="static/imgs/mage-model-cover.png" style="width:100%;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.1);margin-bottom:1.4rem"/>
+<p style="font-size:1.05rem;color:#334155;line-height:1.75">
+<strong>Mage</strong> is a family of lightweight, research-friendly multimodal models built at a <strong>4B-parameter</strong> scale, spanning visual <strong>understanding</strong>, <strong>generation</strong>, and <strong>computer use</strong>. Mage-VL and Mage-Flow share a <em>codec-aligned efficiency</em> philosophy—spend representation capacity where the signal is. <strong>Mage-VL-Cowork</strong> extends the family to desktop workflows, learning to combine graphical interaction and programmatic execution in one compact policy.
         </p>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 </section>
-
 <!-- ══ PROJECT-PAGE CARDS ══ -->
 <section class="section" style="padding-top:0">
-  <div class="hub-grid">
-
-    <a class="hub-card" data-accent="vl" href="./vl/">
-      <span class="hub-tag">Vision–Language · Understanding</span>
-      <div class="hub-name">Mage-VL</div>
-      <div class="hub-title">An Efficient Codec-Native Streaming Multimodal Foundation Model</div>
-      <div class="hub-desc">A codec-native, from-scratch VLM for image &amp; video understanding — reads video the way a codec does (anchor/predicted frames, 16×16 patches), with bio-inspired proactive streaming.</div>
-      <span class="hub-enter">Enter project page <span class="arrow">→</span></span>
-    </a>
-
-    <a class="hub-card" data-accent="flow" href="./flow/">
-      <span class="hub-tag">Generation · Editing</span>
-      <div class="hub-name">Mage-Flow</div>
-      <div class="hub-title">An Efficient Native-Resolution Foundation Model for Image Generation and Editing</div>
-      <div class="hub-desc">A compact 4B generative stack (Mage-VAE + Native-Resolution MMDiT) for text-to-image generation and instruction-based editing at native resolution, with Base / RL / 4-step Turbo variants.</div>
-      <span class="hub-enter">Enter project page <span class="arrow">→</span></span>
-    </a>
-
-  </div>
+<div class="hub-grid">
+<a class="hub-card" data-accent="vl" href="./vl/">
+<span class="hub-tag">Vision–Language · Understanding</span>
+<div class="hub-name">Mage-VL</div>
+<div class="hub-title">An Efficient Codec-Native Streaming Multimodal Foundation Model</div>
+<div class="hub-desc">A codec-native, from-scratch VLM for image &amp; video understanding — reads video the way a codec does (anchor/predicted frames, 16×16 patches), with bio-inspired proactive streaming.</div>
+<span class="hub-enter">Enter project page <span class="arrow">→</span></span>
+</a>
+<a class="hub-card" data-accent="flow" href="./flow/">
+<span class="hub-tag">Generation · Editing</span>
+<div class="hub-name">Mage-Flow</div>
+<div class="hub-title">An Efficient Native-Resolution Foundation Model for Image Generation and Editing</div>
+<div class="hub-desc">A compact 4B generative stack (Mage-VAE + Native-Resolution MMDiT) for text-to-image generation and instruction-based editing at native resolution, with Base / RL / 4-step Turbo variants.</div>
+<span class="hub-enter">Enter project page <span class="arrow">→</span></span>
+</a>
+<a class="hub-card" data-accent="cowork" href="./cowork/">
+<span class="hub-tag">Computer Use · GUI + Code</span>
+<div class="hub-name">Mage-VL-Cowork</div>
+<div class="hub-title">Learning Hybrid Computer Use Capability from Evolved Harness</div>
+<div class="hub-desc">A 4B hybrid computer-use policy that learns when to click and when to code. Mage-CUA-Forge, evolved teacher harnesses, and a progressive five-stage curriculum deliver 66.0% on OSWorld-Verified under a 50-step budget.</div>
+<span class="hub-enter">Enter project page <span class="arrow">→</span></span>
+</a>
+</div>
 </section>
-
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content has-text-centered">
-          <p>Project pages adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> template.
-          &nbsp;·&nbsp; <a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank">Privacy</a>
-          &nbsp;·&nbsp; © 2026 Microsoft</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container">
+<div class="columns is-centered">
+<div class="column is-8">
+<div class="content has-text-centered">
+<p>Project pages adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> template.
+           ·  <a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank">Privacy</a>
+           ·  © 2026 Microsoft</p>
+</div>
+</div>
+</div>
+</div>
 </footer>
-
 </body>
 </html>

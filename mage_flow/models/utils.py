@@ -8,8 +8,32 @@ from loguru import logger
 from safetensors.torch import load_file
 from safetensors.torch import load_file as load_sft
 from torch import Tensor
+from typing import Tuple
+import torch.nn.functional as F
 
 from .mage_flow import MageFlow, MageFlowParams
+
+
+def pad_to_patch_multiple(x: torch.Tensor, patch_size: int = 16) -> Tuple[torch.Tensor, Tuple[int, int]]:
+    H, W = x.shape[-2], x.shape[-1]
+    pad_h = (patch_size - H % patch_size) % patch_size
+    pad_w = (patch_size - W % patch_size) % patch_size
+    if pad_h > 0 or pad_w > 0:
+        x = F.pad(x, (0, pad_w, 0, pad_h), mode="reflect")
+    return x, (pad_h, pad_w)
+
+
+CRITICAL_LAYERS = {"img_in.weight", "txt_in.weight", "proj_out.weight", "final_layer.linear.weight"}
+
+def validate_state_dict_keys(model: torch.nn.Module, state_dict: dict, strict_critical: bool = True):
+    missing, unexpected = model.load_state_dict(state_dict, strict=False, assign=True)
+    if strict_critical:
+        for missing_key in missing:
+            if any(missing_key.endswith(c) for c in CRITICAL_LAYERS):
+                raise KeyError(
+                    f"Critical layer '{missing_key}' is missing from the checkpoint."
+                )
+    return missing, unexpected
 
 
 def get_noise(
@@ -25,8 +49,8 @@ def get_noise(
     return torch.randn(
         num_samples,
         channel,
-        math.ceil(height / 16),
-        math.ceil(width / 16),
+        height // 16,
+        width // 16,
         device=device,
         dtype=dtype,
         generator=torch.Generator(device=device).manual_seed(seed),
@@ -38,8 +62,8 @@ def unpack(x: Tensor, height: int, width: int) -> Tensor:
     return rearrange(
         x,
         "b (h w) c -> b c h w",
-        h=math.ceil(height / 16),
-        w=math.ceil(width / 16),
+        h=height // 16,
+        w=width // 16,
     )
 
 
@@ -122,7 +146,7 @@ def load_model_weight(model, pretrain_path, device="cpu"):
 
             sd = correct_model_weight(sd)
             sd = optionally_expand_state_dict(model, sd)
-            missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
+            missing, unexpected = validate_state_dict_keys(model, sd)
             print_load_warning(missing, unexpected)
             return True
         except Exception as e:
@@ -159,10 +183,16 @@ def optionally_expand_state_dict(model: torch.nn.Module, state_dict: dict) -> di
     """
     Optionally expand the state dict to match the model's parameters shapes.
     """
+    critical_projections = {"img_in", "txt_in", "proj_out"}
     for name, param in model.named_parameters():
         if name in state_dict:
             if state_dict[name].shape != param.shape:
-                logger.info(
+                if any(c in name for c in critical_projections):
+                    raise ValueError(
+                        f"Zero-padding critical projection weights produces dead feature channels. "
+                        f"Cannot safely expand {name} from {state_dict[name].shape} to {param.shape}."
+                    )
+                logger.warning(
                     f"Expanding '{name}' with shape {state_dict[name].shape} to model parameter with shape "
                     f"{param.shape}."
                 )

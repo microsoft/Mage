@@ -67,4 +67,4 @@ const observer = new IntersectionObserver(entries => {
     }
   }
 }, {rootMargin:'-15% 0px -65% 0px'});
-for (const id of ['highlights','data','benchmarks','training']) observer.observe(document.getElementById(id));
+for (const id of ['highlights','data','benchmarks','demos','training']) observer.observe(document.getElementById(id));

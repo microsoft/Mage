@@ -1,0 +1,388 @@
+# Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses
+
+> Plain-text version of https://microsoft.github.io/Mage/cowork/ for language models and AI search. Mage-VL-Cowork is a 4B hybrid computer-use agent from the Microsoft Mage Team that combines GUI actions with code and terminal execution in one policy, reaching 66.0% on OSWorld-Verified under a 50-step budget.
+
+- Page: https://microsoft.github.io/Mage/cowork/
+- Technical report: https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf
+- Code: https://github.com/microsoft/Mage
+- Models: https://huggingface.co/collections/microsoft/mage
+
+## Mage-VL-Cowork A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses
+
+Microsoft Mage Team
+
+Technical report Family code 🤗 Mage collection
+
+One 4B policy that knows when to click—and when to code.
+
+66.0% on OSWorld-Verified · 50-step budget
+
+OSWorld-Verified score versus model size. Baseline results follow their reported settings.
+
+4B parameters
+
+66.0% OSWorld-Verified
+
+50 step budget
+
++10.16 pp RL gain over Hybrid SFT
+
+−13.0% model calls after RL
+
+−25.4% output tokens after RL
+
+66.0%: final RL checkpoint, two-run mean on 361 OSWorld-Verified tasks, excluding Google Drive. Efficiency changes are relative to Hybrid SFT.
+
+## Abstract
+
+Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce Mage-VL-Cowork, a 4B hybrid computer-use agent trained from an intermediate Mage-VL checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. Mage-CUA-Forge powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including 318,837 retained hybrid trajectories. The final policy reaches 66.0% on OSWorld-Verified under a 50-step budget, outperforming reported results of larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds 10.16 percentage points while reducing mean model calls by 13.0% and output tokens by 25.4%.
+
+## Better demonstrations. Stronger compact agents.
+
+Improve how the teacher acts, scale what it learns from, and teach one policy to use both channels.
+
+### Evolve the harness before collecting the corpus
+
+A strong teacher does not automatically make a strong hybrid agent. We refine the scaffold, tool interfaces, prompts, and terminal execution environment before large-scale rollout. Evolution is as much pruning as growth: remove redundant action routes and provide application-level libraries. Specialized GUI, terminal, and hybrid CUA harnesses then roll out the same synthesized tasks to collect demonstrations for different training stages. The final student learns channel routing inside a single policy—not an external orchestrator.
+
+GUI CHANNEL
+
+#### Act on what the screen shows.
+
+Use screenshot-grounded mouse and keyboard actions for visual layouts, rendered output, and live application state.
+
+TERMINAL CHANNEL
+
+#### Work directly with structured files.
+
+Use code, command-line tools, and application libraries to manipulate documents, spreadsheets, and presentations.
+
+The same policy chooses the channel at each turn—and switches when the task calls for it.
+
+Optimize the teacher’s execution upstream; carry better hybrid behavior into every retained demonstration.
+
+More tools are not always better. On the same 672 held-out multi-application tasks, the GUI + coding teacher scores 92.0%, versus 89.6% with an added accessibility channel. The corresponding 4B students score 37.6% and 25.1%—a 12.5 pp gap. See the paired comparison ↓
+
+### Author a workflow once. Generate many executable tasks.
+
+Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned workflows. Shared application preparers create files and desktop state; coordinated branches produce an instruction, environment setup script, and evaluation rubric. For web and cross-application tasks, synthesized InfiniteWeb environments and high-fidelity replicas built upon and expanding WebHarbor provide resettable local state. Student feedback expands and refines the skill taxonomy across generation rounds.
+
+38.24% of tasks span multiple applications. Application counts are multi-label; file-family shares use 877,608 task–file references. InfiniteWeb tasks are reported separately.
+
+293,806 tasks, 6,915 skills, 318,837 trajectories—and 82.6% lower recurring generation expenditure. See the data and cost summary ↓
+
+### Build both capabilities before learning to combine them
+
+Starting from an intermediate 4B Mage-VL checkpoint, the specialize-then-unify curriculum first develops visual grounding, reasoning, structured tool calling, GUI execution, and coding and terminal capabilities. Hybrid CUA SFT then teaches a single policy to combine its channels, followed by online hybrid RL with verifiable rewards.
+
+GUI-Oriented Midtraining → GUI Agent SFT → Coding & Terminal SFT → Hybrid CUA SFT → Online Hybrid RL
+
+The model first develops two capable action channels, then learns to select and combine them. This avoids learning hybrid routing simply as a workaround for weak GUI execution.
+
+45.56% → 55.84% → 66.0% on OSWorld-Verified, from GUI SFT to Hybrid SFT to Hybrid RL. Explore performance and efficiency ↓
+
+MAGE-CUA-FORGE
+
+## Scale supervision. Reuse the construction.
+
+Skill-conditioned workflows turn one-time authoring into a reusable source of desktop tasks.
+
+### A broad foundation for hybrid learning
+
+293,806 distinct tasks
+
+6,915 atomic skills
+
+318,837 retained hybrid trajectories
+
+Task instructions, environment setup, and evaluation rubrics are generated together. 38.24% of tasks involve multiple applications. GUI, terminal, and hybrid harnesses provide stage-specific trajectories; student feedback refines the skill taxonomy across generation rounds.
+
+Explore workflow generation and coverage →
+
+### Lower recurring generation cost
+
+Workflow-first
+
+−82.6%
+
+per-task expenditure · $0.906 → $0.158
+
+Table: Recurring task-generation expenditure
+
+| Env synth. method | Tokens / task | USD / task |
+|---|---|---|
+| Agent-first | 1,276K | $0.906 |
+| Mage-CUA-Forge | 85K | $0.158 |
+
+Both approaches use the same generation model. One-time workflow authoring and debugging are excluded from the recurring per-task comparison.
+
+## Hybrid computer use at 4B
+
+66.0% on OSWorld-Verified, with strong performance across operating-system and multi-application tasks.
+
+### Desktop task performance
+
+Final RL · 4B
+
+66.0%
+
+OSWorld-Verified · 50-step budget
+
+Table: Selected OSWorld-Verified results from the report
+
+| Model | Size | Steps | Overall |
+|---|---|---|---|
+| SCALECUA-Qwen3.5-9B | 9B | 50 | 68.7 |
+| Mage-VL-Cowork | 4B | 50 | 66.0 |
+| Muse Glimmer-30B | 30B | — | 65.9 |
+| Qwen3.6-27B | 27B | — | 63.9 |
+| EvoCUA-32B | 32B | — | 56.7 |
+| OpenCUA-72B | 72B | 50 | 44.9 |
+| Fara1.5-4B | 4B | 50 | 13.9 |
+
+Selected reported results, not a uniform-budget re-evaluation. “—” means the step budget is not specified in the report’s comparison table.
+
+### Across desktop workflows
+
+OSWorld categories
+
+87.5%
+
+Operating system
+
+62.7%
+
+Multi-application workflow
+
+Table: Mage-VL-Cowork category scores
+
+| Category | Score (%) |
+|---|---|
+| OS | 87.5 |
+| Office | 64.9 |
+| Daily | 65.0 |
+| Professional | 66.3 |
+| Workflow | 62.7 |
+| Overall | 66.0 |
+
+Final RL checkpoint, averaged over two runs on 361 held-out tasks, excluding Google Drive. Overall is the mean of task scores, not an unweighted mean of categories.
+
+### Full OSWorld-Verified comparison from the technical report
+
+Table: OSWorld-Verified scores (%); baseline settings as reported
+
+| Model | Steps | OS | Office | Daily | Professional | Workflow | Overall |
+|---|---|---|---|---|---|---|---|
+| Human | — | — | — | — | — | — | 72.4 |
+| Frontier models |  |  |  |  |  |  |  |
+| GPT-5.5 | — | — | — | — | — | — | 78.7 |
+| Claude Opus 4.7 | — | — | — | — | — | — | 78.0 |
+| GPT-5.4 | — | — | — | — | — | — | 75.0 |
+| Kimi-K2.6 | — | — | — | — | — | — | 73.1 |
+| GPT-5.4-mini† | 50 | 79.2 | 68.0 | 76.6 | 69.4 | 63.3 | 69.6 |
+| Claude Sonnet 4.5 | 100 | 70.8 | 72.6 | 61.4 | 63.2 | 49.5 | 62.9 |
+| Seed-1.8 | 100 | 66.7 | 68.8 | 67.1 | 71.4 | 42.4 | 61.9 |
+| Agent S2.5 w/ o3 | 50 | 75.0 | 53.8 | 54.0 | 75.5 | 39.5 | 54.2 |
+| UI-TARS-2 | 100 | 41.7 | 61.1 | 62.1 | 61.2 | 34.1 | 53.1 |
+| Claude Sonnet 4 | 50 | 45.8 | 43.5 | 55.1 | 55.1 | 28.5 | 43.9 |
+| OpenAI CUA | 50 | 70.8 | 23.0 | 37.2 | 51.0 | 15.8 | 31.3 |
+| Models with reported parameter counts |  |  |  |  |  |  |  |
+| SCALECUA-Qwen3.5-9B | 50 | 79.2 | 70.6 | 74.3 | 89.5 | 48.1 | 68.7 |
+| Muse Glimmer-30B | — | — | — | — | — | — | 65.9 |
+| Qwen3.6-27B | — | — | — | — | — | — | 63.9 |
+| EvoCUA-32B | — | — | — | — | — | — | 56.7 |
+| Qwen3.5-27B | — | — | — | — | — | — | 56.2 |
+| ComputerRL-9B | 50 | 75.0 | 45.8 | 52.5 | 71.4 | 27.9 | 48.0 |
+| ProCUA-SFT | — | — | — | — | — | — | 45.0 |
+| OpenCUA-72B | 50 | 45.8 | 42.7 | 53.8 | 75.5 | 22.3 | 44.9 |
+| DART-GUI-7B | 30 | 62.5 | 39.3 | 50.8 | 73.5 | 16.7 | 42.1 |
+| Qwen3.5-9B | — | — | — | — | — | — | 41.8 |
+| OpenCUA-32B | 50 | 60.9 | 29.9 | 41.0 | 65.3 | 14.6 | 35.1 |
+| Fara1.5-4B | 50 | 25.0 | 7.6 | 29.5 | 12.2 | 6.6 | 13.9 |
+| Mage-VL-Cowork-4B | 50 | 87.5 | 64.9 | 65.0 | 66.3 | 62.7 | 66.0 |
+
+Baseline scores and step budgets are shown as reported. † GPT-5.4-mini was evaluated by the authors in one run on 361 tasks, excluding Google Drive. Mage-VL-Cowork uses a two-run mean.
+
+### Browser transfer before RL · 58.6% on WebVoyager-Static
+
+The 4B Mage-VL-Cowork-SFT model achieves 58.6% success (377/643 tasks), ranking second among the evaluated models behind the specialized browser agent Fara1.5-4B (68.0%). It outperforms larger models including Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).
+
+WebVoyager-Static reconstructs all 643 tasks across 15 websites using self-hosted replicas built upon and substantially extending WebHarbor. Verification checks page visits and required UI operations, then compares the answer and backend database state against ground truth—not just the final screenshot.
+
+Table: Offline success rates and self-reported live WebVoyager results from v17
+
+| Model | WebVoyager-Static (%) | Live reported (%) | Δ (pp) |
+|---|---|---|---|
+| Open-source models |  |  |  |
+| Fara1.5-4B | 68.0 | 80.8 | -12.8 |
+| Qwen3-VL-8B-Thinking | 53.7 | — | — |
+| Qwen3.5-9B | 53.3 | — | — |
+| Qwen3-VL-4B-Thinking | 49.6 | — | — |
+| OpenWebRL-4B | 47.1 | 74.1 | -27.0 |
+| MolmoWeb-8B | 46.8 | 78.2 | -31.4 |
+| MolmoWeb-4B | 42.6 | 75.2 | -32.6 |
+| Fara-7B | 40.4 | 73.5 | -33.1 |
+| Qwen3.5-4B | 37.3 | — | — |
+| Mage-VL-Cowork-SFT | 58.6 | — | — |
+
+All models use identical offline evaluation settings. Live scores are separately self-reported results, not measurements under the offline protocol; Δ is offline minus live in percentage points. These are the SFT model’s browser results, not the final RL model’s OSWorld score.
+
+REAL-TIME DEMOS
+
+### Watch it decide when to click—and when to code
+
+Same task, same desktop, same clock. Mage-VL-Cowork works through a hybrid GUI + CLI action space; Qwen3.6-27B works through GUI actions only, in thinking mode. Streaming reasoning, tool calls, and screen actions play back at real speed.
+
+#### Spreadsheet editing in LibreOffice Calc
+
+Merge two banner ranges, label them, add a column chart, and save a new .xlsx file.
+
+Mage-VL-Cowork
+
+Done at 0:39 · 6 steps · edits the workbook with Python in the terminal
+
+Qwen3.6-27B
+
+Done at 9:56 · 39 steps · clicks and drags through the GUI
+
+#### Image editing in GIMP
+
+Add an alpha channel, clear a solid teal background, scale the layer to 280 × 210 px, and save the layered file.
+
+Mage-VL-Cowork
+
+Done at 1:58 · 15 steps · edits in the GUI, then checks the saved file in the terminal
+
+Qwen3.6-27B
+
+Stops at 7:02 · 29 steps · the saved file does not pass the task check
+
+Selected examples from a 10-task internal demo set (Mage-VL-Cowork 9/10, Qwen3.6-27B 4/10 by file-level task checks), not a benchmark sample. Screens and actions are real recordings; each step’s reasoning is revealed over its measured inference time. Each clip ends five seconds after Mage-VL-Cowork finishes, while Qwen3.6-27B keeps running. The two models use different serving setups, so wall-clock time reflects both model and serving.
+
+## More capable. More efficient.
+
+Online RL improves task scores while shortening interaction sequences and reducing generated output.
+
+A COMPLETE FIVE-STAGE RECIPE
+
+01
+
+GUI-Oriented Midtraining
+
+Visual grounding, reasoning, and structured tool calling.
+
+02
+
+GUI Agent SFT
+
+Complete workflows through screenshots, mouse, and keyboard.
+
+03
+
+Coding & Terminal SFT
+
+Terminal, software engineering, and programmatic desktop manipulation.
+
+04
+
+Hybrid CUA SFT
+
+Turn-level routing between GUI interaction and coding or terminal execution.
+
+05
+
+Online Hybrid RL
+
+GRPO with asynchronous rollouts and verifiable task rewards.
+
+STAGE 1 · GUI-ORIENTED MIDTRAINING
+
+### Stronger grounding before multi-step execution
+
+30.6 → 56.9% OSWorld-G
+
+78.8 → 87.2% ScreenSpot-v2
+
+OSWorld-G surpasses Qwen3.5-4B (54.5%); ScreenSpot-v2 exceeds Qwen3-VL-4B (85.3%). The original figure also shows the other reference baselines.
+
+Original v17 Figure 6. Checkpoint evaluations with five-checkpoint moving averages.
+
+GUI SFT45.56%
+
+→
+
+Hybrid SFT55.84%
+
+→
+
+Hybrid RL66.0%
+
+(a) Task performance
+
+(b) Execution length
+
+(c) Token usage
+
+Original, unchanged report panels. GUI SFT / Hybrid SFT / Hybrid RL use three / one / two evaluation rounds on 361 tasks; GPT-5.4-mini uses one round. Execution length counts model-call traces; reasoning tokens are included in output tokens.
+
+RL adds 10.16 pp over Hybrid SFT, while mean model calls fall from 21.57 to 18.77 and mean output tokens from 7,374 to 5,499 per task. The result is a stronger policy with shorter interaction sequences and less generated output.
+
+### Midtraining design · grounding, reasoning, and tool calling
+
+Stage 1 separates the click-only grounding prompt from the full agent schema and deduplicates repeated target locations within same-screenshot packed sequences. The adopted recipe masks the interior of <think> rationales while supervising the delimiter tags and tool calls, preserving the reasoning format while focusing the loss on tool syntax and grounding.
+
+Single Step Cowork Bench: 342 representative desktop interaction steps spanning eight GUI action primitives. It jointly checks reasoning/tool-call syntax, action type and arguments, and spatial hit accuracy. This is a diagnostic specification, not an additional reported aggregate score.
+
+### Compact working memory · recent screenshots + folded action history
+
+Each context retains the three most recent screenshots and four complete responses, with older steps compressed into imperative Action: summaries immediately after the system prompt. A response combines a grounded <think> rationale, an Action: summary, and the executed <tool_call>. Step-level rationale synthesis uses task context, before/after screenshots, and the executed tool call to produce this consistent format.
+
+### RL progression · all 33 recorded evaluations
+
+### Rollout-as-a-Service · asynchronous desktop RL infrastructure
+
+Desktop environments, model inference, and policy optimization scale separately. The infrastructure integrates PoLar, Slime, Azure Relay, and Azure VM Scale Sets, with SGLang serving model requests. Asynchronous rollouts let completed tasks advance training without waiting for the longest desktop episodes.
+
+Reference deployment: 1,120 GUI slots on 70 CPU hosts, with 24 B200 GPUs for training and 8 for inference. The report describes bounded policy lag and truncated importance sampling.
+
+## The harness shapes the student
+
+Cleaner hybrid execution transfers beyond the teacher’s own score.
+
+With the teacher model held fixed, the GUI + coding harness outperforms the AX-augmented variant in both success rate and execution steps. The same ranking carries over to the 4B students trained on their respective demonstrations, with a larger success-rate gap.
+
+Table: Same 672 held-out multi-application tasks; identical evaluation settings
+
+| Teacher harness | Teacher | 4B student |  |  |
+|---|---|---|---|---|
+| Success (%) ↑ | Steps ↓ | Success (%) ↑ | Steps ↓ |  |
+| β1 · GUI + coding | 92.0 | 25.0 | 37.6 | 30.91 |
+| β2 · GUI + coding + AX | 89.6 | 35.3 | 25.1 | 39.4 |
+
+Both teachers use GPT-5.4. Each student learns from its corresponding teacher’s trajectories. The comparison does not establish matched student training budgets.
+
+### Frequently asked questions
+
+### What is Mage-VL-Cowork?
+
+Mage-VL-Cowork is a 4B hybrid computer-use agent (CUA) from the Microsoft Mage Team. A single vision-language policy combines screenshot-grounded GUI actions with code and terminal execution, and reaches 66.0% on OSWorld-Verified under a 50-step budget.
+
+### What is a hybrid computer-use agent?
+
+A hybrid agent can act through two channels. The GUI channel uses mouse and keyboard actions for visual layouts, rendered output, and live application state. The terminal channel uses code, command-line tools, and application libraries for documents, spreadsheets, and presentations. Mage-VL-Cowork chooses the channel at each turn inside one policy, without an external orchestrator.
+
+### How does Mage-VL-Cowork compare with larger computer-use models?
+
+On OSWorld-Verified, the 4B model scores 66.0%, above reported results for Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows.
+
+### What does it mean to evolve the agent harness?
+
+The agent harness is the scaffold around the model: tool interfaces, prompts, and the execution environment. Before large-scale rollout, the teacher harness is refined and pruned. On 672 held-out multi-application tasks, a GUI + coding teacher scores 92.0% versus 89.6% with an added accessibility channel, and the corresponding 4B students score 37.6% versus 25.1%.
+
+### What is Mage-CUA-Forge?
+
+Mage-CUA-Forge is a workflow-first environment and task synthesis pipeline. Reusable, skill-conditioned workflows generate the instruction, environment setup script, and evaluation rubric together. It produced 293,806 desktop and web tasks across 6,915 skills, and lowered recurring per-task generation cost by 82.6% ($0.906 to $0.158).
+
+### How is Mage-VL-Cowork trained?
+
+Training starts from an intermediate Mage-VL checkpoint and follows five stages: GUI-oriented midtraining, GUI agent SFT, coding and terminal SFT, hybrid CUA SFT, and online hybrid reinforcement learning with verifiable rewards. Online RL adds 10.16 percentage points over hybrid SFT while reducing model calls by 13.0% and output tokens by 25.4%.

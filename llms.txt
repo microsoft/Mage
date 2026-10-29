@@ -1,0 +1,21 @@
+# Mage
+
+> Mage is a lightweight, research-friendly multimodal model family from Microsoft. It includes Mage-VL (codec-native streaming video understanding), Mage-Flow (compact image generation and editing), and Mage-VL-Cowork (a 4B hybrid computer-use agent).
+
+## Projects
+
+- [Mage-VL-Cowork](https://microsoft.github.io/Mage/cowork/): 4B hybrid computer-use agent (CUA) that combines GUI actions with code and terminal execution in one policy; 66.0% on OSWorld-Verified under a 50-step budget.
+- [Mage-VL](https://microsoft.github.io/Mage/vl/): efficient codec-native streaming multimodal foundation model.
+- [Mage-Flow](https://microsoft.github.io/Mage/flow/): compact 4B model family for native-resolution image generation and instruction-based editing, with interactive 4-step inference.
+
+## Mage-VL-Cowork
+
+- [Full text summary](https://microsoft.github.io/Mage/llms-full.txt): results, method, data, training recipe, and FAQ in plain text.
+- [Technical report (PDF)](https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf)
+- [Real-time demo: spreadsheet editing](https://microsoft.github.io/Mage/cowork/static/videos/hybrid-vs-gui-spreadsheet.mp4)
+- [Real-time demo: image editing in GIMP](https://microsoft.github.io/Mage/cowork/static/videos/hybrid-vs-gui-gimp.mp4)
+
+## Code and models
+
+- [GitHub: microsoft/Mage](https://github.com/microsoft/Mage)
+- [Hugging Face: Mage collection](https://huggingface.co/collections/microsoft/mage)

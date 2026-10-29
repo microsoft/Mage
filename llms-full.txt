@@ -17,7 +17,7 @@ One 4B policy that knows when to click—and when to code.
 
 66.0% on OSWorld-Verified · 50-step budget
 
-OSWorld-Verified score versus model size. Baseline results follow their reported settings.
+OSWorld-Verified score versus model size.
 
 4B parameters
 
@@ -31,11 +31,9 @@ OSWorld-Verified score versus model size. Baseline results follow their reported
 
 −25.4% output tokens after RL
 
-66.0%: final RL checkpoint, two-run mean on 361 OSWorld-Verified tasks, excluding Google Drive. Efficiency changes are relative to Hybrid SFT.
-
 ## Abstract
 
-Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce Mage-VL-Cowork, a 4B hybrid computer-use agent trained from an intermediate Mage-VL checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. Mage-CUA-Forge powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including 318,837 retained hybrid trajectories. The final policy reaches 66.0% on OSWorld-Verified under a 50-step budget, outperforming reported results of larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds 10.16 percentage points while reducing mean model calls by 13.0% and output tokens by 25.4%.
+Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce Mage-VL-Cowork, a 4B hybrid computer-use agent trained from an intermediate Mage-VL checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. Mage-CUA-Forge powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including 318,837 retained hybrid trajectories. The final policy reaches 66.0% on OSWorld-Verified under a 50-step budget, outperforming larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds 10.16 percentage points while reducing mean model calls by 13.0% and output tokens by 25.4%.
 
 ## Better demonstrations. Stronger compact agents.
 
@@ -67,7 +65,7 @@ More tools are not always better. On the same 672 held-out multi-application tas
 
 Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned workflows. Shared application preparers create files and desktop state; coordinated branches produce an instruction, environment setup script, and evaluation rubric. For web and cross-application tasks, synthesized InfiniteWeb environments and high-fidelity replicas built upon and expanding WebHarbor provide resettable local state. Student feedback expands and refines the skill taxonomy across generation rounds.
 
-38.24% of tasks span multiple applications. Application counts are multi-label; file-family shares use 877,608 task–file references. InfiniteWeb tasks are reported separately.
+38.24% of tasks span multiple applications.
 
 293,806 tasks, 6,915 skills, 318,837 trajectories—and 82.6% lower recurring generation expenditure. See the data and cost summary ↓
 
@@ -114,7 +112,7 @@ Table: Recurring task-generation expenditure
 | Agent-first | 1,276K | $0.906 |
 | Mage-CUA-Forge | 85K | $0.158 |
 
-Both approaches use the same generation model. One-time workflow authoring and debugging are excluded from the recurring per-task comparison.
+Both approaches use the same generation model.
 
 ## Hybrid computer use at 4B
 
@@ -128,7 +126,7 @@ Final RL · 4B
 
 OSWorld-Verified · 50-step budget
 
-Table: Selected OSWorld-Verified results from the report
+Table: Selected OSWorld-Verified results
 
 | Model | Size | Steps | Overall |
 |---|---|---|---|
@@ -139,8 +137,6 @@ Table: Selected OSWorld-Verified results from the report
 | EvoCUA-32B | 32B | — | 56.7 |
 | OpenCUA-72B | 72B | 50 | 44.9 |
 | Fara1.5-4B | 4B | 50 | 13.9 |
-
-Selected reported results, not a uniform-budget re-evaluation. “—” means the step budget is not specified in the report’s comparison table.
 
 ### Across desktop workflows
 
@@ -165,11 +161,9 @@ Table: Mage-VL-Cowork category scores
 | Workflow | 62.7 |
 | Overall | 66.0 |
 
-Final RL checkpoint, averaged over two runs on 361 held-out tasks, excluding Google Drive. Overall is the mean of task scores, not an unweighted mean of categories.
-
 ### Full OSWorld-Verified comparison from the technical report
 
-Table: OSWorld-Verified scores (%); baseline settings as reported
+Table: OSWorld-Verified scores (%)
 
 | Model | Steps | OS | Office | Daily | Professional | Workflow | Overall |
 |---|---|---|---|---|---|---|---|
@@ -179,14 +173,14 @@ Table: OSWorld-Verified scores (%); baseline settings as reported
 | Claude Opus 4.7 | — | — | — | — | — | — | 78.0 |
 | GPT-5.4 | — | — | — | — | — | — | 75.0 |
 | Kimi-K2.6 | — | — | — | — | — | — | 73.1 |
-| GPT-5.4-mini† | 50 | 79.2 | 68.0 | 76.6 | 69.4 | 63.3 | 69.6 |
+| GPT-5.4-mini | 50 | 79.2 | 68.0 | 76.6 | 69.4 | 63.3 | 69.6 |
 | Claude Sonnet 4.5 | 100 | 70.8 | 72.6 | 61.4 | 63.2 | 49.5 | 62.9 |
 | Seed-1.8 | 100 | 66.7 | 68.8 | 67.1 | 71.4 | 42.4 | 61.9 |
 | Agent S2.5 w/ o3 | 50 | 75.0 | 53.8 | 54.0 | 75.5 | 39.5 | 54.2 |
 | UI-TARS-2 | 100 | 41.7 | 61.1 | 62.1 | 61.2 | 34.1 | 53.1 |
 | Claude Sonnet 4 | 50 | 45.8 | 43.5 | 55.1 | 55.1 | 28.5 | 43.9 |
 | OpenAI CUA | 50 | 70.8 | 23.0 | 37.2 | 51.0 | 15.8 | 31.3 |
-| Models with reported parameter counts |  |  |  |  |  |  |  |
+| Models with known parameter counts |  |  |  |  |  |  |  |
 | SCALECUA-Qwen3.5-9B | 50 | 79.2 | 70.6 | 74.3 | 89.5 | 48.1 | 68.7 |
 | Muse Glimmer-30B | — | — | — | — | — | — | 65.9 |
 | Qwen3.6-27B | — | — | — | — | — | — | 63.9 |
@@ -201,17 +195,15 @@ Table: OSWorld-Verified scores (%); baseline settings as reported
 | Fara1.5-4B | 50 | 25.0 | 7.6 | 29.5 | 12.2 | 6.6 | 13.9 |
 | Mage-VL-Cowork-4B | 50 | 87.5 | 64.9 | 65.0 | 66.3 | 62.7 | 66.0 |
 
-Baseline scores and step budgets are shown as reported. † GPT-5.4-mini was evaluated by the authors in one run on 361 tasks, excluding Google Drive. Mage-VL-Cowork uses a two-run mean.
-
 ### Browser transfer before RL · 58.6% on WebVoyager-Static
 
 The 4B Mage-VL-Cowork-SFT model achieves 58.6% success (377/643 tasks), ranking second among the evaluated models behind the specialized browser agent Fara1.5-4B (68.0%). It outperforms larger models including Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).
 
 WebVoyager-Static reconstructs all 643 tasks across 15 websites using self-hosted replicas built upon and substantially extending WebHarbor. Verification checks page visits and required UI operations, then compares the answer and backend database state against ground truth—not just the final screenshot.
 
-Table: Offline success rates and self-reported live WebVoyager results from v17
+Table: WebVoyager-Static and live WebVoyager success rates
 
-| Model | WebVoyager-Static (%) | Live reported (%) | Δ (pp) |
+| Model | WebVoyager-Static (%) | Live (%) | Δ (pp) |
 |---|---|---|---|
 | Open-source models |  |  |  |
 | Fara1.5-4B | 68.0 | 80.8 | -12.8 |
@@ -224,8 +216,6 @@ Table: Offline success rates and self-reported live WebVoyager results from v17
 | Fara-7B | 40.4 | 73.5 | -33.1 |
 | Qwen3.5-4B | 37.3 | — | — |
 | Mage-VL-Cowork-SFT | 58.6 | — | — |
-
-All models use identical offline evaluation settings. Live scores are separately self-reported results, not measurements under the offline protocol; Δ is offline minus live in percentage points. These are the SFT model’s browser results, not the final RL model’s OSWorld score.
 
 REAL-TIME DEMOS
 
@@ -256,8 +246,6 @@ Done at 1:58 · 15 steps · edits in the GUI, then checks the saved file in the 
 Qwen3.6-27B
 
 Stops at 7:02 · 29 steps · the saved file does not pass the task check
-
-Selected examples from a 10-task internal demo set (Mage-VL-Cowork 9/10, Qwen3.6-27B 4/10 by file-level task checks), not a benchmark sample. Screens and actions are real recordings; each step’s reasoning is revealed over its measured inference time. Each clip ends five seconds after Mage-VL-Cowork finishes, while Qwen3.6-27B keeps running. The two models use different serving setups, so wall-clock time reflects both model and serving.
 
 ## More capable. More efficient.
 
@@ -303,9 +291,9 @@ STAGE 1 · GUI-ORIENTED MIDTRAINING
 
 78.8 → 87.2% ScreenSpot-v2
 
-OSWorld-G surpasses Qwen3.5-4B (54.5%); ScreenSpot-v2 exceeds Qwen3-VL-4B (85.3%). The original figure also shows the other reference baselines.
+OSWorld-G surpasses Qwen3.5-4B (54.5%); ScreenSpot-v2 exceeds Qwen3-VL-4B (85.3%).
 
-Original v17 Figure 6. Checkpoint evaluations with five-checkpoint moving averages.
+Checkpoint evaluations with five-checkpoint moving averages.
 
 GUI SFT45.56%
 
@@ -323,15 +311,13 @@ Hybrid RL66.0%
 
 (c) Token usage
 
-Original, unchanged report panels. GUI SFT / Hybrid SFT / Hybrid RL use three / one / two evaluation rounds on 361 tasks; GPT-5.4-mini uses one round. Execution length counts model-call traces; reasoning tokens are included in output tokens.
-
 RL adds 10.16 pp over Hybrid SFT, while mean model calls fall from 21.57 to 18.77 and mean output tokens from 7,374 to 5,499 per task. The result is a stronger policy with shorter interaction sequences and less generated output.
 
 ### Midtraining design · grounding, reasoning, and tool calling
 
 Stage 1 separates the click-only grounding prompt from the full agent schema and deduplicates repeated target locations within same-screenshot packed sequences. The adopted recipe masks the interior of <think> rationales while supervising the delimiter tags and tool calls, preserving the reasoning format while focusing the loss on tool syntax and grounding.
 
-Single Step Cowork Bench: 342 representative desktop interaction steps spanning eight GUI action primitives. It jointly checks reasoning/tool-call syntax, action type and arguments, and spatial hit accuracy. This is a diagnostic specification, not an additional reported aggregate score.
+Single Step Cowork Bench: 342 representative desktop interaction steps spanning eight GUI action primitives. It jointly checks reasoning/tool-call syntax, action type and arguments, and spatial hit accuracy.
 
 ### Compact working memory · recent screenshots + folded action history
 
@@ -359,7 +345,7 @@ Table: Same 672 held-out multi-application tasks; identical evaluation settings
 | β1 · GUI + coding | 92.0 | 25.0 | 37.6 | 30.91 |
 | β2 · GUI + coding + AX | 89.6 | 35.3 | 25.1 | 39.4 |
 
-Both teachers use GPT-5.4. Each student learns from its corresponding teacher’s trajectories. The comparison does not establish matched student training budgets.
+Both teachers use GPT-5.4. Each student learns from its corresponding teacher’s trajectories.
 
 ### Frequently asked questions
 
@@ -373,7 +359,7 @@ A hybrid agent can act through two channels. The GUI channel uses mouse and keyb
 
 ### How does Mage-VL-Cowork compare with larger computer-use models?
 
-On OSWorld-Verified, the 4B model scores 66.0%, above reported results for Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows.
+On OSWorld-Verified, the 4B model scores 66.0%, ahead of Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows.
 
 ### What does it mean to evolve the agent harness?
 

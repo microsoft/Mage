@@ -16,7 +16,7 @@ numpy==2.4.3                # used by the test/benchmark scripts
 
 # --- diffusion + HF model stack ---
 diffusers==0.38.0
-transformers==5.5.0
+transformers==5.10.1
 accelerate==1.13.0          # used by transformers `from_pretrained` loading path
 safetensors==0.8.0          # diffusers 0.38.0 requires safetensors>=0.8.0
 huggingface_hub>=0.20       # snapshot_download for MageFlowPipeline.from_pretrained("<hf repo id>")

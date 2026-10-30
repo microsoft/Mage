@@ -18,4 +18,6 @@
 ## Code and models
 
 - [GitHub: microsoft/Mage](https://github.com/microsoft/Mage)
+- [Mage-VL-Cowork code](https://github.com/microsoft/Mage/tree/main/mage_vl_cowork)
+- [Hugging Face: microsoft/Mage-VL-Cowork](https://huggingface.co/microsoft/Mage-VL-Cowork)
 - [Hugging Face: Mage collection](https://huggingface.co/collections/microsoft/mage)

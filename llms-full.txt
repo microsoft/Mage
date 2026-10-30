@@ -4,7 +4,8 @@
 
 - Page: https://microsoft.github.io/Mage/cowork/
 - Technical report: https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf
-- Code: https://github.com/microsoft/Mage
+- Code: https://github.com/microsoft/Mage/tree/main/mage_vl_cowork
+- Model: https://huggingface.co/microsoft/Mage-VL-Cowork
 - Models: https://huggingface.co/collections/microsoft/mage
 
 ## Mage-VL-Cowork A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses

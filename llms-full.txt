@@ -8,33 +8,9 @@
 - Model: https://huggingface.co/microsoft/Mage-VL-Cowork
 - Models: https://huggingface.co/collections/microsoft/mage
 
-## Mage-VL-Cowork A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses
-
-Microsoft Mage Team
-
-Technical report Family code 🤗 Mage collection
-
-One 4B policy that knows when to click—and when to code.
-
-66.0% on OSWorld-Verified · 50-step budget
-
-OSWorld-Verified score versus model size.
-
-4B parameters
-
-66.0% OSWorld-Verified
-
-50 step budget
-
-+10.16 pp RL gain over Hybrid SFT
-
-−13.0% model calls after RL
-
-−25.4% output tokens after RL
-
 ## Abstract
 
-Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce Mage-VL-Cowork, a 4B hybrid computer-use agent trained from an intermediate Mage-VL checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. Mage-CUA-Forge powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including 318,837 retained hybrid trajectories. The final policy reaches 66.0% on OSWorld-Verified under a 50-step budget, outperforming larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds 10.16 percentage points while reducing mean model calls by 13.0% and output tokens by 25.4%.
+Effective computer-use agents (CUAs) should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We present Mage-VL-Cowork, a 4B hybrid CUA trained from a general multimodally aligned checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. To power this curriculum at scale, Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve the teacher harness and instantiate specialized CUA harnesses to yield high-quality trajectories alongside stage-specific supervision. Mage-VL-Cowork-4B finally climbs to 66.0% on OSWorld-Verified through different training stages with more efficient reasoning cost, achieving state-of-the-art performance at its parameter size and pushing forward the frontier of on-device intelligence.
 
 ## Better demonstrations. Stronger compact agents.
 
@@ -131,7 +107,7 @@ Table: Selected OSWorld-Verified results
 
 | Model | Size | Steps | Overall |
 |---|---|---|---|
-| SCALECUA-Qwen3.5-9B | 9B | 50 | 68.7 |
+| ScaleCUA-Qwen3.5-9B | 9B | 50 | 68.7 |
 | Mage-VL-Cowork | 4B | 50 | 66.0 |
 | Muse Glimmer-30B | 30B | — | 65.9 |
 | Qwen3.6-27B | 27B | — | 63.9 |
@@ -174,15 +150,15 @@ Table: OSWorld-Verified scores (%)
 | Claude Opus 4.7 | — | — | — | — | — | — | 78.0 |
 | GPT-5.4 | — | — | — | — | — | — | 75.0 |
 | Kimi-K2.6 | — | — | — | — | — | — | 73.1 |
-| GPT-5.4-mini | 50 | 79.2 | 68.0 | 76.6 | 69.4 | 63.3 | 69.6 |
+| GPT-5.4-mini† | 50 | 79.2 | 68.0 | 76.6 | 69.4 | 63.3 | 69.6 |
 | Claude Sonnet 4.5 | 100 | 70.8 | 72.6 | 61.4 | 63.2 | 49.5 | 62.9 |
 | Seed-1.8 | 100 | 66.7 | 68.8 | 67.1 | 71.4 | 42.4 | 61.9 |
 | Agent S2.5 w/ o3 | 50 | 75.0 | 53.8 | 54.0 | 75.5 | 39.5 | 54.2 |
 | UI-TARS-2 | 100 | 41.7 | 61.1 | 62.1 | 61.2 | 34.1 | 53.1 |
 | Claude Sonnet 4 | 50 | 45.8 | 43.5 | 55.1 | 55.1 | 28.5 | 43.9 |
 | OpenAI CUA | 50 | 70.8 | 23.0 | 37.2 | 51.0 | 15.8 | 31.3 |
-| Models with known parameter counts |  |  |  |  |  |  |  |
-| SCALECUA-Qwen3.5-9B | 50 | 79.2 | 70.6 | 74.3 | 89.5 | 48.1 | 68.7 |
+| Models with reported parameter counts |  |  |  |  |  |  |  |
+| ScaleCUA-Qwen3.5-9B | 50 | 79.2 | 70.6 | 74.3 | 89.5 | 48.1 | 68.7 |
 | Muse Glimmer-30B | — | — | — | — | — | — | 65.9 |
 | Qwen3.6-27B | — | — | — | — | — | — | 63.9 |
 | EvoCUA-32B | — | — | — | — | — | — | 56.7 |
@@ -195,6 +171,8 @@ Table: OSWorld-Verified scores (%)
 | OpenCUA-32B | 50 | 60.9 | 29.9 | 41.0 | 65.3 | 14.6 | 35.1 |
 | Fara1.5-4B | 50 | 25.0 | 7.6 | 29.5 | 12.2 | 6.6 | 13.9 |
 | Mage-VL-Cowork-4B | 50 | 87.5 | 64.9 | 65.0 | 66.3 | 62.7 | 66.0 |
+
+† Evaluated by the authors in one run on 361 tasks, excluding Google Drive.
 
 ### Browser transfer before RL · 58.6% on WebVoyager-Static
 
@@ -340,15 +318,14 @@ With the teacher model held fixed, the GUI + coding harness outperforms the AX-a
 
 Table: Same 672 held-out multi-application tasks; identical evaluation settings
 
-| Teacher harness | Teacher | 4B student |  |  |
+| Teacher harness | Teacher success (%) ↑ | Teacher steps ↓ | 4B student success (%) ↑ | 4B student steps ↓ |
 |---|---|---|---|---|
-| Success (%) ↑ | Steps ↓ | Success (%) ↑ | Steps ↓ |  |
 | β1 · GUI + coding | 92.0 | 25.0 | 37.6 | 30.91 |
 | β2 · GUI + coding + AX | 89.6 | 35.3 | 25.1 | 39.4 |
 
 Both teachers use GPT-5.4. Each student learns from its corresponding teacher’s trajectories.
 
-### Frequently asked questions
+## Frequently asked questions
 
 ### What is Mage-VL-Cowork?
 
@@ -360,7 +337,7 @@ A hybrid agent can act through two channels. The GUI channel uses mouse and keyb
 
 ### How does Mage-VL-Cowork compare with larger computer-use models?
 
-On OSWorld-Verified, the 4B model scores 66.0%, ahead of Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows.
+On OSWorld-Verified with a 50-step budget, the 4B model scores 66.0%, ahead of larger open-source agents such as Muse Glimmer-30B (65.9%), Qwen3.6-27B (63.9%), EvoCUA-32B (56.7%), and OpenCUA-72B (44.9%). ScaleCUA-Qwen3.5-9B scores higher overall (68.7%), while Mage-VL-Cowork leads it on operating-system tasks (87.5% vs. 79.2%) and multi-application workflows (62.7% vs. 48.1%). Frontier proprietary models such as GPT-5.5 (78.7%) remain ahead.
 
 ### What does it mean to evolve the agent harness?
 
@@ -373,3 +350,15 @@ Mage-CUA-Forge is a workflow-first environment and task synthesis pipeline. Reus
 ### How is Mage-VL-Cowork trained?
 
 Training starts from an intermediate Mage-VL checkpoint and follows five stages: GUI-oriented midtraining, GUI agent SFT, coding and terminal SFT, hybrid CUA SFT, and online hybrid reinforcement learning with verifiable rewards. Online RL adds 10.16 percentage points over hybrid SFT while reducing model calls by 13.0% and output tokens by 25.4%.
+
+### How was the 66.0% OSWorld-Verified score measured?
+
+The final RL checkpoint is evaluated on 361 held-out OSWorld-Verified tasks, excluding Google Drive, with a 50-step budget. The reported 66.0% is the average of two evaluation runs.
+
+### Can Mage-VL-Cowork operate web browsers?
+
+Yes. Before RL, the Mage-VL-Cowork SFT model reaches 58.6% (377/643 tasks) on WebVoyager-Static, second behind the specialized browser agent Fara1.5-4B (68.0%) and ahead of Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).
+
+### Where are the weights, and what is the license?
+
+The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository.

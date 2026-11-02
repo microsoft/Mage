@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="Mage-VL-Cowork is a 4B hybrid computer-use agent from Microsoft that combines GUI actions with code and terminal execution in one policy, reaching 66.0% on OSWorld-Verified. Evolved agent harness, workflow-first task synthesis, five-stage training, and real-time demos." name="description"/>
+<meta content="Mage-VL-Cowork is an open-weight 4B hybrid computer-use agent from Microsoft. One policy combines GUI actions with code and terminal execution and reaches 66.0% on OSWorld-Verified." name="description"/>
 <meta content="Mage-VL-Cowork, computer-use agent, CUA, hybrid computer use, GUI agent, agentic AI, AI agent, agent harness, harness engineering, OSWorld-Verified, WebVoyager, desktop automation, GUI + CLI, code execution, terminal agent, vision-language model, VLM, multimodal agent, compact 4B model, reinforcement learning, RLVR, environment synthesis, Microsoft" name="keywords"/>
 <meta content="Microsoft Mage Team" name="author"/>
 <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
@@ -22,6 +22,7 @@
 <meta content="One 4B policy that knows when to click and when to code. Evolved agent harness, workflow-first task synthesis, and five-stage training." name="twitter:description"/>
 <meta content="https://microsoft.github.io/Mage/cowork/static/imgs/teaser-20261030-wx.png" name="twitter:image"/>
 <link href="../llms.txt" rel="alternate" title="LLM-readable summary" type="text/plain"/>
+<link href="../llms-full.txt" rel="alternate" title="Plain-text version of this page" type="text/plain"/>
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -65,7 +66,7 @@
    "@id": "https://microsoft.github.io/Mage/cowork/#webpage",
    "url": "https://microsoft.github.io/Mage/cowork/",
    "name": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses",
-   "description": "Mage-VL-Cowork is a 4B hybrid computer-use agent from Microsoft that combines GUI actions with code and terminal execution in one policy, reaching 66.0% on OSWorld-Verified. Evolved agent harness, workflow-first task synthesis, five-stage training, and real-time demos.",
+   "description": "Mage-VL-Cowork is an open-weight 4B hybrid computer-use agent from Microsoft. One policy combines GUI actions with code and terminal execution and reaches 66.0% on OSWorld-Verified.",
    "inLanguage": "en",
    "isPartOf": {
     "@id": "https://microsoft.github.io/Mage/#website"
@@ -127,7 +128,7 @@
    "@id": "https://microsoft.github.io/Mage/cowork/#report",
    "headline": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses",
    "name": "Mage-VL-Cowork technical report",
-   "abstract": "Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce Mage-VL-Cowork, a 4B hybrid computer-use agent trained from an intermediate Mage-VL checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. Mage-CUA-Forge powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including 318,837 retained hybrid trajectories. The final policy reaches 66.0% on OSWorld-Verified under a 50-step budget, outperforming larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds 10.16 percentage points while reducing mean model calls by 13.0% and output tokens by 25.4%.",
+   "abstract": "Effective computer-use agents (CUAs) should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We present Mage-VL-Cowork, a 4B hybrid CUA trained from a general multimodally aligned checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. To power this curriculum at scale, Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve the teacher harness and instantiate specialized CUA harnesses to yield high-quality trajectories alongside stage-specific supervision. Mage-VL-Cowork-4B finally climbs to 66.0% on OSWorld-Verified through different training stages with more efficient reasoning cost, achieving state-of-the-art performance at its parameter size and pushing forward the frontier of on-device intelligence.",
    "url": "https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf",
    "encodingFormat": "application/pdf",
    "image": "https://microsoft.github.io/Mage/cowork/static/imgs/teaser-20261030-wx.png",
@@ -169,6 +170,31 @@
     }
    ],
    "keywords": "computer-use agent, hybrid computer use, GUI agent, agentic AI, agent harness, harness engineering, OSWorld-Verified, WebVoyager, vision-language model, reinforcement learning with verifiable rewards, environment synthesis"
+  },
+  {
+   "@type": "CreativeWork",
+   "@id": "https://microsoft.github.io/Mage/cowork/#model",
+   "name": "Mage-VL-Cowork 4B model weights",
+   "url": "https://huggingface.co/microsoft/Mage-VL-Cowork",
+   "license": "https://www.apache.org/licenses/LICENSE-2.0",
+   "creator": {
+    "@id": "https://microsoft.github.io/Mage/#mage-team"
+   },
+   "subjectOf": {
+    "@id": "https://microsoft.github.io/Mage/cowork/#report"
+   }
+  },
+  {
+   "@type": "SoftwareSourceCode",
+   "@id": "https://microsoft.github.io/Mage/cowork/#code",
+   "name": "Mage-VL-Cowork code",
+   "codeRepository": "https://github.com/microsoft/Mage/tree/main/mage_vl_cowork",
+   "author": {
+    "@id": "https://microsoft.github.io/Mage/#mage-team"
+   },
+   "subjectOf": {
+    "@id": "https://microsoft.github.io/Mage/cowork/#report"
+   }
   },
   {
    "@type": "VideoObject",
@@ -259,7 +285,7 @@
      "name": "How does Mage-VL-Cowork compare with larger computer-use models?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "On OSWorld-Verified, the 4B model scores 66.0%, ahead of Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows."
+      "text": "On OSWorld-Verified with a 50-step budget, the 4B model scores 66.0%, ahead of larger open-source agents such as Muse Glimmer-30B (65.9%), Qwen3.6-27B (63.9%), EvoCUA-32B (56.7%), and OpenCUA-72B (44.9%). ScaleCUA-Qwen3.5-9B scores higher overall (68.7%), while Mage-VL-Cowork leads it on operating-system tasks (87.5% vs. 79.2%) and multi-application workflows (62.7% vs. 48.1%). Frontier proprietary models such as GPT-5.5 (78.7%) remain ahead."
      }
     },
     {
@@ -284,6 +310,30 @@
      "acceptedAnswer": {
       "@type": "Answer",
       "text": "Training starts from an intermediate Mage-VL checkpoint and follows five stages: GUI-oriented midtraining, GUI agent SFT, coding and terminal SFT, hybrid CUA SFT, and online hybrid reinforcement learning with verifiable rewards. Online RL adds 10.16 percentage points over hybrid SFT while reducing model calls by 13.0% and output tokens by 25.4%."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How was the 66.0% OSWorld-Verified score measured?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The final RL checkpoint is evaluated on 361 held-out OSWorld-Verified tasks, excluding Google Drive, with a 50-step budget. The reported 66.0% is the average of two evaluation runs."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can Mage-VL-Cowork operate web browsers?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Before RL, the Mage-VL-Cowork SFT model reaches 58.6% (377/643 tasks) on WebVoyager-Static, second behind the specialized browser agent Fara1.5-4B (68.0%) and ahead of Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Where are the weights, and what is the license?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository."
      }
     }
    ]
@@ -353,7 +403,7 @@
 <section class="section cw-abstract" id="abstract">
 <div class="container is-max-desktop"><div class="columns is-centered has-text-centered"><div class="column is-four-fifths">
 <h2 class="title is-3">Abstract</h2>
-<div class="content has-text-justified"><p>Effective computer-use agents should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We introduce <strong>Mage-VL-Cowork</strong>, a <strong>4B hybrid computer-use agent</strong> trained from an intermediate <strong>Mage-VL checkpoint</strong> through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. <strong>Mage-CUA-Forge</strong> powers this curriculum with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing <strong>293,806 desktop and web tasks</strong> across <strong>6,915 skills</strong> while reducing recurring per-task expenditure by <strong>82.6%</strong>. Rather than directly distilling a default teacher, we evolve its harness and instantiate specialized GUI, terminal, and hybrid configurations to collect stage-specific supervision, including <strong>318,837 retained hybrid trajectories</strong>. The final policy reaches <strong>66.0% on OSWorld-Verified</strong> under a 50-step budget, outperforming larger agents including Muse Glimmer-30B and Qwen3.6-27B. Relative to Hybrid SFT, online RL adds <strong>10.16 percentage points</strong> while reducing mean model calls by <strong>13.0%</strong> and output tokens by <strong>25.4%</strong>.</p></div>
+<div class="content has-text-justified"><p>Effective computer-use agents (CUAs) should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We present <strong>Mage-VL-Cowork</strong>, a <strong>4B hybrid CUA</strong> trained from a general multimodally aligned checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. To power this curriculum at scale, <strong>Mage-CUA-Forge</strong> replaces per-task agent construction with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing <strong>293,806 desktop and web tasks</strong> across <strong>6,915 skills</strong> while reducing recurring per-task expenditure by <strong>82.6%</strong>. Rather than directly distilling a default teacher, we evolve the teacher harness and instantiate specialized CUA harnesses to yield high-quality trajectories alongside stage-specific supervision. Mage-VL-Cowork-4B finally climbs to <strong>66.0% on OSWorld-Verified</strong> through different training stages with more efficient reasoning cost, achieving state-of-the-art performance at its parameter size and pushing forward the frontier of on-device intelligence.</p></div>
 </div></div></div>
 </section>
 <section class="rf-section rf-section-soft" id="highlights">
@@ -403,7 +453,7 @@
 <div class="rf-score-top"><h3>Desktop task performance</h3><span class="rf-score-badge">Final RL · 4B</span></div>
 <div class="rf-score-number">66.0<span class="cw-percent">%</span></div><p class="rf-score-label">OSWorld-Verified · 50-step budget</p>
 <table class="rf-mini-table"><caption class="cw-sr-only">Selected OSWorld-Verified results</caption><thead><tr><th>Model</th><th>Size</th><th>Steps</th><th>Overall</th></tr></thead><tbody>
-<tr><td>SCALECUA-Qwen3.5-9B</td><td>9B</td><td>50</td><td>68.7</td></tr>
+<tr><td>ScaleCUA-Qwen3.5-9B</td><td>9B</td><td>50</td><td>68.7</td></tr>
 <tr class="ours"><td>Mage-VL-Cowork</td><td>4B</td><td>50</td><td>66.0</td></tr>
 <tr><td>Muse Glimmer-30B</td><td>30B</td><td>—</td><td>65.9</td></tr>
 <tr><td>Qwen3.6-27B</td><td>27B</td><td>—</td><td>63.9</td></tr>
@@ -420,7 +470,7 @@
 
 </article>
 </div>
-<details class="rf-details" id="full-results"><summary>Full OSWorld-Verified comparison from the technical report</summary><div class="rf-details-body"><div aria-label="OSWorld-Verified scores (%)" class="cw-table-scroll" role="region" tabindex="0"><table class="cw-table"><caption>OSWorld-Verified scores (%)</caption><thead><tr><th scope="col">Model</th><th scope="col">Steps</th><th scope="col">OS</th><th scope="col">Office</th><th scope="col">Daily</th><th scope="col">Professional</th><th scope="col">Workflow</th><th scope="col">Overall</th></tr></thead><tbody><tr><td>Human</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>72.4</td></tr><tr class="cw-group"><td colspan="8">Frontier models</td></tr><tr><td>GPT-5.5</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>78.7</td></tr><tr><td>Claude Opus 4.7</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>78.0</td></tr><tr><td>GPT-5.4</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>75.0</td></tr><tr><td>Kimi-K2.6</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>73.1</td></tr><tr><td>GPT-5.4-mini</td><td>50</td><td>79.2</td><td>68.0</td><td>76.6</td><td>69.4</td><td>63.3</td><td>69.6</td></tr><tr><td>Claude Sonnet 4.5</td><td>100</td><td>70.8</td><td>72.6</td><td>61.4</td><td>63.2</td><td>49.5</td><td>62.9</td></tr><tr><td>Seed-1.8</td><td>100</td><td>66.7</td><td>68.8</td><td>67.1</td><td>71.4</td><td>42.4</td><td>61.9</td></tr><tr><td>Agent S2.5 w/ o3</td><td>50</td><td>75.0</td><td>53.8</td><td>54.0</td><td>75.5</td><td>39.5</td><td>54.2</td></tr><tr><td>UI-TARS-2</td><td>100</td><td>41.7</td><td>61.1</td><td>62.1</td><td>61.2</td><td>34.1</td><td>53.1</td></tr><tr><td>Claude Sonnet 4</td><td>50</td><td>45.8</td><td>43.5</td><td>55.1</td><td>55.1</td><td>28.5</td><td>43.9</td></tr><tr><td>OpenAI CUA</td><td>50</td><td>70.8</td><td>23.0</td><td>37.2</td><td>51.0</td><td>15.8</td><td>31.3</td></tr><tr class="cw-group"><td colspan="8">Models with known parameter counts</td></tr><tr><td>SCALECUA-Qwen3.5-9B</td><td>50</td><td>79.2</td><td>70.6</td><td>74.3</td><td>89.5</td><td>48.1</td><td>68.7</td></tr><tr><td>Muse Glimmer-30B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>65.9</td></tr><tr><td>Qwen3.6-27B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>63.9</td></tr><tr><td>EvoCUA-32B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>56.7</td></tr><tr><td>Qwen3.5-27B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>56.2</td></tr><tr><td>ComputerRL-9B</td><td>50</td><td>75.0</td><td>45.8</td><td>52.5</td><td>71.4</td><td>27.9</td><td>48.0</td></tr><tr><td>ProCUA-SFT</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>45.0</td></tr><tr><td>OpenCUA-72B</td><td>50</td><td>45.8</td><td>42.7</td><td>53.8</td><td>75.5</td><td>22.3</td><td>44.9</td></tr><tr><td>DART-GUI-7B</td><td>30</td><td>62.5</td><td>39.3</td><td>50.8</td><td>73.5</td><td>16.7</td><td>42.1</td></tr><tr><td>Qwen3.5-9B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>41.8</td></tr><tr><td>OpenCUA-32B</td><td>50</td><td>60.9</td><td>29.9</td><td>41.0</td><td>65.3</td><td>14.6</td><td>35.1</td></tr><tr><td>Fara1.5-4B</td><td>50</td><td>25.0</td><td>7.6</td><td>29.5</td><td>12.2</td><td>6.6</td><td>13.9</td></tr><tr class="ours"><td>Mage-VL-Cowork-4B</td><td>50</td><td>87.5</td><td>64.9</td><td>65.0</td><td>66.3</td><td>62.7</td><td>66.0</td></tr></tbody></table></div></div></details>
+<details class="rf-details" id="full-results"><summary>Full OSWorld-Verified comparison from the technical report</summary><div class="rf-details-body"><div aria-label="OSWorld-Verified scores (%)" class="cw-table-scroll" role="region" tabindex="0"><table class="cw-table"><caption>OSWorld-Verified scores (%)</caption><thead><tr><th scope="col">Model</th><th scope="col">Steps</th><th scope="col">OS</th><th scope="col">Office</th><th scope="col">Daily</th><th scope="col">Professional</th><th scope="col">Workflow</th><th scope="col">Overall</th></tr></thead><tbody><tr><td>Human</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>72.4</td></tr><tr class="cw-group"><td colspan="8">Frontier models</td></tr><tr><td>GPT-5.5</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>78.7</td></tr><tr><td>Claude Opus 4.7</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>78.0</td></tr><tr><td>GPT-5.4</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>75.0</td></tr><tr><td>Kimi-K2.6</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>73.1</td></tr><tr><td>GPT-5.4-mini†</td><td>50</td><td>79.2</td><td>68.0</td><td>76.6</td><td>69.4</td><td>63.3</td><td>69.6</td></tr><tr><td>Claude Sonnet 4.5</td><td>100</td><td>70.8</td><td>72.6</td><td>61.4</td><td>63.2</td><td>49.5</td><td>62.9</td></tr><tr><td>Seed-1.8</td><td>100</td><td>66.7</td><td>68.8</td><td>67.1</td><td>71.4</td><td>42.4</td><td>61.9</td></tr><tr><td>Agent S2.5 w/ o3</td><td>50</td><td>75.0</td><td>53.8</td><td>54.0</td><td>75.5</td><td>39.5</td><td>54.2</td></tr><tr><td>UI-TARS-2</td><td>100</td><td>41.7</td><td>61.1</td><td>62.1</td><td>61.2</td><td>34.1</td><td>53.1</td></tr><tr><td>Claude Sonnet 4</td><td>50</td><td>45.8</td><td>43.5</td><td>55.1</td><td>55.1</td><td>28.5</td><td>43.9</td></tr><tr><td>OpenAI CUA</td><td>50</td><td>70.8</td><td>23.0</td><td>37.2</td><td>51.0</td><td>15.8</td><td>31.3</td></tr><tr class="cw-group"><td colspan="8">Models with reported parameter counts</td></tr><tr><td>ScaleCUA-Qwen3.5-9B</td><td>50</td><td>79.2</td><td>70.6</td><td>74.3</td><td>89.5</td><td>48.1</td><td>68.7</td></tr><tr><td>Muse Glimmer-30B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>65.9</td></tr><tr><td>Qwen3.6-27B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>63.9</td></tr><tr><td>EvoCUA-32B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>56.7</td></tr><tr><td>Qwen3.5-27B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>56.2</td></tr><tr><td>ComputerRL-9B</td><td>50</td><td>75.0</td><td>45.8</td><td>52.5</td><td>71.4</td><td>27.9</td><td>48.0</td></tr><tr><td>ProCUA-SFT</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>45.0</td></tr><tr><td>OpenCUA-72B</td><td>50</td><td>45.8</td><td>42.7</td><td>53.8</td><td>75.5</td><td>22.3</td><td>44.9</td></tr><tr><td>DART-GUI-7B</td><td>30</td><td>62.5</td><td>39.3</td><td>50.8</td><td>73.5</td><td>16.7</td><td>42.1</td></tr><tr><td>Qwen3.5-9B</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>41.8</td></tr><tr><td>OpenCUA-32B</td><td>50</td><td>60.9</td><td>29.9</td><td>41.0</td><td>65.3</td><td>14.6</td><td>35.1</td></tr><tr><td>Fara1.5-4B</td><td>50</td><td>25.0</td><td>7.6</td><td>29.5</td><td>12.2</td><td>6.6</td><td>13.9</td></tr><tr class="ours"><td>Mage-VL-Cowork-4B</td><td>50</td><td>87.5</td><td>64.9</td><td>65.0</td><td>66.3</td><td>62.7</td><td>66.0</td></tr></tbody></table></div><p class="cw-note">† Evaluated by the authors in one run on 361 tasks, excluding Google Drive.</p></div></details>
 <details class="rf-details" id="browser-results"><summary>Browser transfer before RL · 58.6% on WebVoyager-Static</summary><div class="rf-details-body cw-browser"><p>The <strong>4B Mage-VL-Cowork-SFT model</strong> achieves <strong>58.6% success (377/643 tasks)</strong>, ranking second among the evaluated models behind the specialized browser agent <strong>Fara1.5-4B (68.0%)</strong>. It outperforms larger models including Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).</p><p>WebVoyager-Static reconstructs all <strong>643 tasks across 15 websites</strong> using self-hosted replicas built upon and substantially extending WebHarbor. Verification checks <strong>page visits and required UI operations</strong>, then compares the answer and backend database state against ground truth—not just the final screenshot.</p><div aria-label="WebVoyager-Static results" class="cw-table-scroll" role="region" tabindex="0"><table class="cw-table"><caption>WebVoyager-Static and live WebVoyager success rates</caption><thead><tr><th scope="col">Model</th><th scope="col">WebVoyager-Static (%)</th><th scope="col">Live (%)</th><th scope="col">Δ (pp)</th></tr></thead><tbody><tr class="cw-group"><td colspan="4">Open-source models</td></tr><tr><td>Fara1.5-4B</td><td>68.0</td><td>80.8</td><td>-12.8</td></tr><tr><td>Qwen3-VL-8B-Thinking</td><td>53.7</td><td>—</td><td>—</td></tr><tr><td>Qwen3.5-9B</td><td>53.3</td><td>—</td><td>—</td></tr><tr><td>Qwen3-VL-4B-Thinking</td><td>49.6</td><td>—</td><td>—</td></tr><tr><td>OpenWebRL-4B</td><td>47.1</td><td>74.1</td><td>-27.0</td></tr><tr><td>MolmoWeb-8B</td><td>46.8</td><td>78.2</td><td>-31.4</td></tr><tr><td>MolmoWeb-4B</td><td>42.6</td><td>75.2</td><td>-32.6</td></tr><tr><td>Fara-7B</td><td>40.4</td><td>73.5</td><td>-33.1</td></tr><tr><td>Qwen3.5-4B</td><td>37.3</td><td>—</td><td>—</td></tr><tr class="ours"><td>Mage-VL-Cowork-SFT</td><td>58.6</td><td>—</td><td>—</td></tr></tbody></table></div></div></details>
 <div class="cw-demos" id="demos">
 <div class="cw-demos-head"><p class="cw-eyebrow">REAL-TIME DEMOS</p><h3>Watch it decide when to click—and when to code</h3><p class="cw-lead">Same task, same desktop, same clock. Mage-VL-Cowork works through a hybrid GUI + CLI action space; Qwen3.6-27B works through GUI actions only, in thinking mode. Streaming reasoning, tool calls, and screen actions play back at real speed.</p></div>
@@ -462,10 +512,13 @@
 <details class="rf-details cw-faq" id="faq"><summary>Frequently asked questions</summary><div class="rf-details-body">
 <h3>What is Mage-VL-Cowork?</h3><p>Mage-VL-Cowork is a 4B hybrid computer-use agent (CUA) from the Microsoft Mage Team. A single vision-language policy combines screenshot-grounded GUI actions with code and terminal execution, and reaches 66.0% on OSWorld-Verified under a 50-step budget.</p>
 <h3>What is a hybrid computer-use agent?</h3><p>A hybrid agent can act through two channels. The GUI channel uses mouse and keyboard actions for visual layouts, rendered output, and live application state. The terminal channel uses code, command-line tools, and application libraries for documents, spreadsheets, and presentations. Mage-VL-Cowork chooses the channel at each turn inside one policy, without an external orchestrator.</p>
-<h3>How does Mage-VL-Cowork compare with larger computer-use models?</h3><p>On OSWorld-Verified, the 4B model scores 66.0%, ahead of Muse Glimmer-30B (65.9%) and Qwen3.6-27B (63.9%). It scores 87.5% on operating-system tasks and 62.7% on multi-application workflows.</p>
+<h3>How does Mage-VL-Cowork compare with larger computer-use models?</h3><p>On OSWorld-Verified with a 50-step budget, the 4B model scores 66.0%, ahead of larger open-source agents such as Muse Glimmer-30B (65.9%), Qwen3.6-27B (63.9%), EvoCUA-32B (56.7%), and OpenCUA-72B (44.9%). ScaleCUA-Qwen3.5-9B scores higher overall (68.7%), while Mage-VL-Cowork leads it on operating-system tasks (87.5% vs. 79.2%) and multi-application workflows (62.7% vs. 48.1%). Frontier proprietary models such as GPT-5.5 (78.7%) remain ahead.</p>
 <h3>What does it mean to evolve the agent harness?</h3><p>The agent harness is the scaffold around the model: tool interfaces, prompts, and the execution environment. Before large-scale rollout, the teacher harness is refined and pruned. On 672 held-out multi-application tasks, a GUI + coding teacher scores 92.0% versus 89.6% with an added accessibility channel, and the corresponding 4B students score 37.6% versus 25.1%.</p>
 <h3>What is Mage-CUA-Forge?</h3><p>Mage-CUA-Forge is a workflow-first environment and task synthesis pipeline. Reusable, skill-conditioned workflows generate the instruction, environment setup script, and evaluation rubric together. It produced 293,806 desktop and web tasks across 6,915 skills, and lowered recurring per-task generation cost by 82.6% ($0.906 to $0.158).</p>
 <h3>How is Mage-VL-Cowork trained?</h3><p>Training starts from an intermediate Mage-VL checkpoint and follows five stages: GUI-oriented midtraining, GUI agent SFT, coding and terminal SFT, hybrid CUA SFT, and online hybrid reinforcement learning with verifiable rewards. Online RL adds 10.16 percentage points over hybrid SFT while reducing model calls by 13.0% and output tokens by 25.4%.</p>
+<h3>How was the 66.0% OSWorld-Verified score measured?</h3><p>The final RL checkpoint is evaluated on 361 held-out OSWorld-Verified tasks, excluding Google Drive, with a 50-step budget. The reported 66.0% is the average of two evaluation runs.</p>
+<h3>Can Mage-VL-Cowork operate web browsers?</h3><p>Yes. Before RL, the Mage-VL-Cowork SFT model reaches 58.6% (377/643 tasks) on WebVoyager-Static, second behind the specialized browser agent Fara1.5-4B (68.0%) and ahead of Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).</p>
+<h3>Where are the weights, and what is the license?</h3><p>The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository.</p>
 </div></details>
 </div>
 </section>

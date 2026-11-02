@@ -228,8 +228,12 @@ def _encode_texts_packed(model, prompts, template, drop_idx, device):
                   return_tensors="pt").input_ids.squeeze(0)
         for p in prompts
     ]
-    input_ids = torch.cat(ids_list).to(device)
-    cu_seqlens = _lens_to_cu([int(t.numel()) for t in ids_list], device)
+    # Text encoder may live on a different device than the transformer/VAE
+    # (two-GPU split) — encode on ITS device; `device` param is where the
+    # caller (_slice_packed) will move the result afterward.
+    txt_device = next(model.txt_enc.parameters()).device
+    input_ids = torch.cat(ids_list).to(txt_device)
+    cu_seqlens = _lens_to_cu([int(t.numel()) for t in ids_list], txt_device)
     res = model.txt_enc(
         input_ids, cu_seqlens, drop_idx_override=drop_idx)
     return res["txt"], res["vec"], res["txt_seq_lens"].tolist()
@@ -397,17 +401,18 @@ def _encode_edits_packed(model, ref_pils_per_sample, instructions, template, dro
     """Encode ALL image-conditioned edit instructions in ONE packed multimodal
     varlen forward (pixel_values/image_grid_thw concatenated across samples,
     cu_seqlens isolates each). Returns (txt_flat [ΣLi, D], vec [N, D], per-sample lens)."""
+    txt_device = next(model.txt_enc.parameters()).device
     processor = model.txt_enc.processor
     ids_list, pv_list, thw_list = [], [], []
     for ref_pils, instr in zip(ref_pils_per_sample, instructions, strict=False):
         formatted = template.format(_edit_prompt_body(instr, len(ref_pils)))
         vl = processor(text=[formatted], images=list(ref_pils), padding=True, return_tensors="pt")
-        vl = {k: (v.to(device) if hasattr(v, "to") else v) for k, v in vl.items()}
+        vl = {k: (v.to(txt_device) if hasattr(v, "to") else v) for k, v in vl.items()}
         ids_list.append(vl["input_ids"].squeeze(0))
         if vl.get("pixel_values") is not None:
             pv_list.append(vl["pixel_values"]); thw_list.append(vl["image_grid_thw"])
-    input_ids = torch.cat(ids_list).to(device)
-    cu = _lens_to_cu([int(t.numel()) for t in ids_list], device)
+    input_ids = torch.cat(ids_list).to(txt_device)
+    cu = _lens_to_cu([int(t.numel()) for t in ids_list], txt_device)
     inputs = {"input_ids": input_ids, "cu_seqlens": cu}
     if pv_list:
         inputs["pixel_values"] = torch.cat(pv_list, dim=0)
@@ -649,15 +654,20 @@ class MageFlowPipeline:
         self.device = device
 
     @classmethod
-    def from_pretrained(cls, repo_dir: str, device: str = "cuda"):
+    def from_pretrained(cls, repo_dir: str, device: str = "cuda", text_device: str | None = None):
         """Load a Mage-Flow diffusers-style repo (``model_index.json`` +
         ``transformer/`` ``vae/`` ``scheduler/`` ``text_encoder/``).
 
         ``repo_dir`` may be a local directory OR a Hugging Face Hub repo id
         (e.g. ``"microsoft/Mage-Flow-4B"``), which is downloaded and cached
         automatically on first use.
+
+        ``device`` hosts the transformer + VAE (this is also what ``generate``/
+        ``edit`` use for image tensors, scheduler, etc). Pass ``text_device``
+        (e.g. ``"cuda:1"`` while ``device="cuda:0"``) to put the Qwen3-VL text
+        encoder on a second GPU and roughly halve peak VRAM per device.
         """
-        return cls(load_from_repo(repo_dir, device), device)
+        return cls(load_from_repo(repo_dir, device, text_device), device)
 
     def generate(self, prompts, **kw) -> list[Image.Image]:
         """Packed multi-resolution t2i. ``prompts`` is a list (or a single
@@ -710,13 +720,17 @@ def _resolve_repo_dir(repo_dir: str) -> str:
     return snapshot_download(repo_id=repo_dir)
 
 
-def load_from_repo(repo_dir: str, device: str = "cuda") -> MageFlowModel:
+def load_from_repo(repo_dir: str, device: str = "cuda", text_device: str | None = None) -> MageFlowModel:
     """Load a Mage-Flow diffusers-style repo (model_index.json + transformer/
     vae/ scheduler/). Transformer weights come from the bf16 safetensors;
     VAE + text encoder are built from the sources recorded in model_index.json.
 
     ``repo_dir`` may be a local directory OR a Hugging Face Hub repo id (e.g.
     ``microsoft/Mage-Flow-4B``), which is downloaded/cached automatically.
+
+    ``device`` hosts the transformer + VAE. ``text_device`` (defaults to
+    ``device``) hosts the Qwen3-VL text encoder — pass a different value
+    (e.g. ``"cuda:1"`` vs ``"cuda:0"``) to split the stack across two GPUs.
     """
     from safetensors.torch import load_file
     repo_dir = _resolve_repo_dir(repo_dir)
@@ -750,11 +764,17 @@ def load_from_repo(repo_dir: str, device: str = "cuda") -> MageFlowModel:
     sd = load_file(_safe_subpath(repo_dir, "transformer", "diffusion_pytorch_model.safetensors"),
                    device="cpu")
     model.transformer.load_state_dict(sd, strict=False, assign=True)
-    model.to(device)
+    # Move each component to its target device separately to avoid OOM
+    # from putting everything on one GPU simultaneously.
+    model.transformer.to(device)
     model.transformer.to(torch.bfloat16)
-    model.txt_enc.to(torch.bfloat16)
     if model.vae is not None:
+        model.vae.to(device)
         model.vae.to(torch.bfloat16)
+    # Text encoder goes to text_device if specified, otherwise to device.
+    _txt_dev = text_device if text_device is not None else device
+    model.txt_enc.to(_txt_dev)
+    model.txt_enc.to(torch.bfloat16)
     model.eval()
     # Diffusers FlowMatchEulerDiscreteScheduler (scheduler/scheduler_config.json).
     model.scheduler = FlowMatchEulerDiscreteScheduler.from_pretrained(

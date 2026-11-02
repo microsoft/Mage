@@ -749,7 +749,18 @@ def load_from_repo(repo_dir: str, device: str = "cuda") -> MageFlowModel:
     model = MageFlowModel(cfg)
     sd = load_file(_safe_subpath(repo_dir, "transformer", "diffusion_pytorch_model.safetensors"),
                    device="cpu")
-    model.transformer.load_state_dict(sd, strict=False, assign=True)
+    
+    from .models.utils import validate_state_dict_keys
+    validate_state_dict_keys(model.transformer, sd)
+    
+    vae_channels = getattr(model.vae, "latent_channels", None)
+    transformer_channels = getattr(model.transformer, "in_channels", None)
+    if vae_channels is not None and transformer_channels is not None:
+        if vae_channels != transformer_channels:
+            raise ValueError(
+                f"Pipeline Architecture Mismatch: VAE latent_channels ({vae_channels}) "
+                f"does not match Transformer in_channels ({transformer_channels})."
+            )
     model.to(device)
     model.transformer.to(torch.bfloat16)
     model.txt_enc.to(torch.bfloat16)

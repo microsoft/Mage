@@ -12,6 +12,19 @@ from torch import Tensor
 from .mage_flow import MageFlow, MageFlowParams
 
 
+CRITICAL_LAYERS = {"img_in.weight", "txt_in.weight", "proj_out.weight", "final_layer.linear.weight"}
+
+def validate_state_dict_keys(model: torch.nn.Module, state_dict: dict, strict_critical: bool = True):
+    missing, unexpected = model.load_state_dict(state_dict, strict=False, assign=True)
+    if strict_critical:
+        for missing_key in missing:
+            if any(missing_key.endswith(c) for c in CRITICAL_LAYERS):
+                raise KeyError(
+                    f"Critical layer '{missing_key}' is missing from the checkpoint."
+                )
+    return missing, unexpected
+
+
 def get_noise(
     num_samples: int,
     channel: int,
@@ -122,7 +135,7 @@ def load_model_weight(model, pretrain_path, device="cpu"):
 
             sd = correct_model_weight(sd)
             sd = optionally_expand_state_dict(model, sd)
-            missing, unexpected = model.load_state_dict(sd, strict=False, assign=True)
+            missing, unexpected = validate_state_dict_keys(model, sd)
             print_load_warning(missing, unexpected)
             return True
         except Exception as e:
@@ -159,10 +172,16 @@ def optionally_expand_state_dict(model: torch.nn.Module, state_dict: dict) -> di
     """
     Optionally expand the state dict to match the model's parameters shapes.
     """
+    critical_projections = {"img_in", "txt_in", "proj_out"}
     for name, param in model.named_parameters():
         if name in state_dict:
             if state_dict[name].shape != param.shape:
-                logger.info(
+                if any(c in name for c in critical_projections):
+                    raise ValueError(
+                        f"Zero-padding critical projection weights produces dead feature channels. "
+                        f"Cannot safely expand {name} from {state_dict[name].shape} to {param.shape}."
+                    )
+                logger.warning(
                     f"Expanding '{name}' with shape {state_dict[name].shape} to model parameter with shape "
                     f"{param.shape}."
                 )

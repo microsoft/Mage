@@ -174,7 +174,8 @@ class MageFlowModel(nn.Module):
                 # Handle wrapped EMA format: {'ema_state_dict': ..., ...}
                 if isinstance(sd, dict) and "ema_state_dict" in sd:
                     sd = sd["ema_state_dict"]
-                missing, unexpected = self.load_state_dict(sd, strict=False)
+                from .utils import validate_state_dict_keys
+                missing, unexpected = validate_state_dict_keys(self, sd)
                 if missing:
                     logger.warning(f"Full model load missing keys ({len(missing)}): {missing[:5]}...")
                 if unexpected:

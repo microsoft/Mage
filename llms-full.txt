@@ -3,7 +3,7 @@
 > Plain-text version of https://microsoft.github.io/Mage/cowork/ for language models and AI search. Mage-VL-Cowork is a 4B hybrid computer-use agent from the Microsoft Mage Team that combines GUI actions with code and terminal execution in one policy, reaching 66.0% on OSWorld-Verified under a 50-step budget.
 
 - Page: https://microsoft.github.io/Mage/cowork/
-- Technical report: https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf
+- Technical report: https://arxiv.org/abs/2610.40747 (arXiv:2610.40747, submitted 2026-10-29)
 - Code: https://github.com/microsoft/Mage/tree/main/mage_vl_cowork
 - Model: https://huggingface.co/microsoft/Mage-VL-Cowork
 - Models: https://huggingface.co/collections/microsoft/mage
@@ -362,3 +362,18 @@ Yes. Before RL, the Mage-VL-Cowork SFT model reaches 58.6% (377/643 tasks) on We
 ### Where are the weights, and what is the license?
 
 The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository.
+
+### Where can I read the paper?
+
+The technical report is on arXiv as arXiv:2610.40747, submitted on October 29, 2026.
+
+## Citation
+
+```bibtex
+@article{zhang2026magecowork,
+  title={Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses},
+  author={Zhang, Xiaoyi and Wang, Haoqing and Zhang, Xinjie and Ming, Xiang and Wang, Xing and Yang, Senqiao and Zhang, Kaichen and Jia, Zhaoyang and Tan, Andong and Wang, Xinjiang and others},
+  journal={arXiv preprint arXiv:2610.40747},
+  year={2026}
+}
+```

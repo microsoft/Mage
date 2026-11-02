@@ -11,7 +11,7 @@
 ## Mage-VL-Cowork
 
 - [Mage-VL-Cowork full text](https://microsoft.github.io/Mage/llms-full.txt): plain-text version of the Mage-VL-Cowork page (results, method, data, training recipe, FAQ).
-- [Technical report (PDF)](https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf)
+- [Technical report (arXiv:2610.40747)](https://arxiv.org/abs/2610.40747)
 - [Real-time demo: spreadsheet editing](https://microsoft.github.io/Mage/cowork/static/videos/hybrid-vs-gui-spreadsheet.mp4)
 - [Real-time demo: image editing in GIMP](https://microsoft.github.io/Mage/cowork/static/videos/hybrid-vs-gui-gimp.mp4)
 

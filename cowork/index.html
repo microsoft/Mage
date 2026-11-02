@@ -121,16 +121,32 @@
      "@id": "https://microsoft.github.io/Mage/cowork/#video-gimp"
     }
    ],
-   "dateModified": "2026-10-29"
+   "dateModified": "2026-11-02"
   },
   {
-   "@type": "TechArticle",
+   "@type": "ScholarlyArticle",
    "@id": "https://microsoft.github.io/Mage/cowork/#report",
-   "headline": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses",
+   "headline": "Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses",
    "name": "Mage-VL-Cowork technical report",
    "abstract": "Effective computer-use agents (CUAs) should seamlessly combine visual GUI interaction with code and terminal execution within a single policy. We present Mage-VL-Cowork, a 4B hybrid CUA trained from a general multimodally aligned checkpoint through an end-to-end, progressive five-stage curriculum across midtraining, SFT, and RL. To power this curriculum at scale, Mage-CUA-Forge replaces per-task agent construction with reusable, skill-conditioned generation workflows and application-specific preparers, synthesizing 293,806 desktop and web tasks across 6,915 skills while reducing recurring per-task expenditure by 82.6%. Rather than directly distilling a default teacher, we evolve the teacher harness and instantiate specialized CUA harnesses to yield high-quality trajectories alongside stage-specific supervision. Mage-VL-Cowork-4B finally climbs to 66.0% on OSWorld-Verified through different training stages with more efficient reasoning cost, achieving state-of-the-art performance at its parameter size and pushing forward the frontier of on-device intelligence.",
-   "url": "https://microsoft.github.io/Mage/cowork/assets/Mage-VL-Cowork.pdf",
-   "encodingFormat": "application/pdf",
+   "url": "https://arxiv.org/abs/2610.40747",
+   "sameAs": [
+    "https://arxiv.org/abs/2610.40747",
+    "https://doi.org/10.48550/arXiv.2610.40747"
+   ],
+   "identifier": [
+    {
+     "@type": "PropertyValue",
+     "propertyID": "arXiv",
+     "value": "2610.40747"
+    },
+    {
+     "@type": "PropertyValue",
+     "propertyID": "DOI",
+     "value": "10.48550/arXiv.2610.40747"
+    }
+   ],
+   "datePublished": "2026-10-29",
    "image": "https://microsoft.github.io/Mage/cowork/static/imgs/teaser-20261030-wx.png",
    "author": {
     "@id": "https://microsoft.github.io/Mage/#mage-team"
@@ -335,6 +351,14 @@
       "@type": "Answer",
       "text": "The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository."
      }
+    },
+    {
+     "@type": "Question",
+     "name": "Where can I read the paper?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The technical report is on arXiv as arXiv:2610.40747, submitted on October 29, 2026."
+     }
     }
    ]
   }
@@ -376,7 +400,7 @@
 <p class="rf-report-description"><a href="#contributors">Microsoft Mage Team</a></p>
 <div class="rf-actions">
 <a class="rf-button" href="https://huggingface.co/microsoft/Mage-VL-Cowork" rel="noopener" target="_blank"><span aria-hidden="true">🤗</span> Mage-VL-Cowork</a>
-<a class="rf-button" href="https://github.com/microsoft/Mage/blob/main/assets/mage_vl_cowork_tech_report.pdf" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14 3H6v18h12V7l-4-4ZM14 3v5h5M9 12h6M9 16h6"></path></svg> Technical report</a>
+<a class="rf-button" href="https://arxiv.org/abs/2610.40747" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M14 3H6v18h12V7l-4-4ZM14 3v5h5M9 12h6M9 16h6"></path></svg> Technical report</a>
 <a class="rf-button" href="https://github.com/microsoft/Mage/tree/main/mage_vl_cowork" rel="noopener" target="_blank"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"></path></svg> Code</a>
 <a class="rf-button" href="https://huggingface.co/collections/microsoft/mage" rel="noopener" target="_blank"><span aria-hidden="true">🤗</span> Mage collection</a>
 </div>
@@ -519,6 +543,7 @@
 <h3>How was the 66.0% OSWorld-Verified score measured?</h3><p>The final RL checkpoint is evaluated on 361 held-out OSWorld-Verified tasks, excluding Google Drive, with a 50-step budget. The reported 66.0% is the average of two evaluation runs.</p>
 <h3>Can Mage-VL-Cowork operate web browsers?</h3><p>Yes. Before RL, the Mage-VL-Cowork SFT model reaches 58.6% (377/643 tasks) on WebVoyager-Static, second behind the specialized browser agent Fara1.5-4B (68.0%) and ahead of Qwen3-VL-8B-Thinking (53.7%) and Qwen3.5-9B (53.3%).</p>
 <h3>Where are the weights, and what is the license?</h3><p>The 4B checkpoint is on Hugging Face as microsoft/Mage-VL-Cowork under the Apache-2.0 license. The code is in the mage_vl_cowork directory of the microsoft/Mage GitHub repository.</p>
+<h3>Where can I read the paper?</h3><p>The technical report is on arXiv as <a href="https://arxiv.org/abs/2610.40747" rel="noopener" target="_blank">arXiv:2610.40747</a>, submitted on October 29, 2026.</p>
 </div></details>
 </div>
 </section>
@@ -558,9 +583,9 @@
 <div class="container is-max-desktop content">
 <h2 class="title is-3 has-text-centered">BibTeX 📚</h2>
 <pre><code>@article{zhang2026magecowork,
-  title={Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses},
+  title={Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses},
   author={Zhang, Xiaoyi and Wang, Haoqing and Zhang, Xinjie and Ming, Xiang and Wang, Xing and Yang, Senqiao and Zhang, Kaichen and Jia, Zhaoyang and Tan, Andong and Wang, Xinjiang and others},
-  journal={arXiv preprint},
+  journal={arXiv preprint arXiv:2610.40747},
   year={2026}
 }</code></pre>
 </div>

@@ -341,15 +341,20 @@ class AttnBlock(nn.Module):
 # torch.compile can fuse the surrounding ops normally.
 # ---------------------------------------------------------------------------
 class _ConstAdaLN(nn.Module):
-    def __init__(self, modulation: torch.Tensor):
+    def __init__(self, modulation: torch.Tensor, original_mlp: nn.Module):
         super().__init__()
         self.register_buffer("modulation", modulation.detach().clone())
+        self.original_mlp = original_mlp
+        self.enabled = True
+        self.bypass = False
 
     def forward(self, c):
-        b = c.shape[0]
-        if self.modulation.shape[0] != b:
-            return self.modulation.expand(b, *self.modulation.shape[1:])
-        return self.modulation
+        if getattr(self, "enabled", True) and not getattr(self, "bypass", False):
+            b = c.shape[0]
+            if self.modulation.shape[0] != b:
+                return self.modulation.expand(b, *self.modulation.shape[1:])
+            return self.modulation
+        return self.original_mlp(c)
 
 
 def _replace_adaln_with_const(module: nn.Module, c: torch.Tensor) -> int:
@@ -365,7 +370,7 @@ def _replace_adaln_with_const(module: nn.Module, c: torch.Tensor) -> int:
             continue
         with torch.no_grad():
             mod = adaln(c)
-        child.adaLN_modulation = _ConstAdaLN(mod)
+        child.adaLN_modulation = _ConstAdaLN(mod, original_mlp=adaln)
         n += 1
     return n
 
@@ -491,6 +496,11 @@ class _DConvDenoiser(nn.Module):
     def forward(self, x, t, cond):
         b, _, h, w = x.shape
         c = self.t_embedder(t.view(-1))
+        
+        bypass_cache = t.abs().max().item() > 1e-5
+        for m in self.blocks.modules():
+            if isinstance(m, _ConstAdaLN):
+                m.bypass = bypass_cache
 
         s = self.s_embedder(x, cond)
         for block in self.blocks:
@@ -544,6 +554,7 @@ class MageVAE(nn.Module):
     def __init__(self, ckpt_path: str, sample_posterior: bool = True):
         super().__init__()
         self.sample_posterior = sample_posterior
+        self._adaln_cache_enabled = True
 
         self.dconv_encoder = _DConvEncoder()
         self.decoder_model = _DConvDenoiser()
@@ -612,14 +623,20 @@ class MageVAE(nn.Module):
         return self._moments(x)
 
     @torch.no_grad()
-    def encode(self, x: torch.Tensor) -> torch.Tensor:
+    def encode(self, x: torch.Tensor, generator: torch.Generator | None = None) -> torch.Tensor:
+        from ..utils import pad_to_patch_multiple
+        
         ps = self.dconv_encoder.patch_size
-        H, W = x.shape[-2], x.shape[-1]
-        if H % ps or W % ps:
-            raise ValueError(f"H, W must be multiples of {ps}, got ({H}, {W})")
+        x, (pad_h, pad_w) = pad_to_patch_multiple(x, patch_size=ps)
+        
         mean, logvar = self._encode_moments(x)
         if self.sample_posterior:
-            return mean + torch.exp(0.5 * logvar) * torch.randn_like(mean)
+            mean_f32 = mean.float()
+            logvar_f32 = logvar.float()
+            std_f32 = torch.exp(0.5 * logvar_f32)
+            eps = torch.randn(mean_f32.shape, device=mean.device, dtype=torch.float32, generator=generator)
+            latent_f32 = mean_f32 + std_f32 * eps
+            return latent_f32.to(dtype=mean.dtype)
         return mean
 
     @torch.no_grad()
@@ -649,3 +666,10 @@ class MageVAE(nn.Module):
         _replace_adaln_with_const(self.dconv_encoder, c_enc)
         c_dec = self.decoder_model.t_embedder(t)
         _replace_adaln_with_const(self.decoder_model, c_dec)
+        self.set_adaln_cache(self._adaln_cache_enabled)
+
+    def set_adaln_cache(self, enabled: bool):
+        self._adaln_cache_enabled = enabled
+        for m in self.modules():
+            if isinstance(m, _ConstAdaLN):
+                m.enabled = enabled

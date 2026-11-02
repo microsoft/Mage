@@ -62,6 +62,14 @@ def _resolve_fa2() -> Callable[..., Any]:
 
 
 def _resolve_fa4() -> Callable[..., Any]:
+    import torch
+    if torch.cuda.is_available():
+        major, _ = torch.cuda.get_device_capability()
+        if major < 9:
+            from loguru import logger
+            logger.warning("FlashAttention-4 requires SM90+ (Hopper). Falling back to FA2.")
+            return _resolve_fa2()
+
     from flash_attn.cute import flash_attn_varlen_func as _fa4_fn
 
     def _fa4_wrapper(
@@ -183,28 +191,45 @@ def _resolve_sdpa() -> Callable[..., Any]:
             k = k.repeat_interleave(repeat, dim=1)
             v = v.repeat_interleave(repeat, dim=1)
 
-        # q/k/v: (total_tokens, nheads, head_dim). Dispatch SDPA per sequence,
-        # then concat. Python-level loop is fine since nseq is small (one per
-        # image in the pack) and image-gen latency is dominated by sampling.
+        # q/k/v: (total_tokens, nheads, head_dim). Batched pad sequence SDPA
+        # to avoid sequential python loop overhead.
         cu_q = cu_seqlens_q.tolist()
         cu_k = cu_seqlens_k.tolist()
+        
+        q_list = [q[qs:qe] for qs, qe in zip(cu_q[:-1], cu_q[1:])]
+        k_list = [k[ks:ke] for ks, ke in zip(cu_k[:-1], cu_k[1:])]
+        v_list = [v[ks:ke] for ks, ke in zip(cu_k[:-1], cu_k[1:])]
+        
+        q_pad = torch.nn.utils.rnn.pad_sequence(q_list, batch_first=True) # (B, max_Lq, H, D)
+        k_pad = torch.nn.utils.rnn.pad_sequence(k_list, batch_first=True)
+        v_pad = torch.nn.utils.rnn.pad_sequence(v_list, batch_first=True)
+        
+        q_pad = q_pad.transpose(1, 2) # (B, H, max_Lq, D)
+        k_pad = k_pad.transpose(1, 2)
+        v_pad = v_pad.transpose(1, 2)
+        
+        B = len(q_list)
+        max_q = q_pad.shape[2]
+        max_k = k_pad.shape[2]
+        attn_mask = torch.zeros(B, max_q, max_k, dtype=torch.bool, device=q.device)
+        for i, (lq, lk) in enumerate(zip([len(x) for x in q_list], [len(x) for x in k_list])):
+            attn_mask[i, :lq, :lk] = True
+        attn_mask = attn_mask.unsqueeze(1)
+        
+        out_pad = F.scaled_dot_product_attention(
+            q_pad, k_pad, v_pad,
+            attn_mask=attn_mask,
+            dropout_p=0.0,
+            is_causal=causal,
+            scale=softmax_scale,
+        )
+        
+        out_pad = out_pad.transpose(1, 2) # (B, max_q, H, D)
+        
         outs = []
-        for qs, qe, ks, ke in zip(cu_q[:-1], cu_q[1:], cu_k[:-1], cu_k[1:]):
-            # (s, h, d) → (1, h, s, d)
-            q_i = q[qs:qe].transpose(0, 1).unsqueeze(0)
-            k_i = k[ks:ke].transpose(0, 1).unsqueeze(0)
-            v_i = v[ks:ke].transpose(0, 1).unsqueeze(0)
-            out_i = F.scaled_dot_product_attention(
-                q_i,
-                k_i,
-                v_i,
-                attn_mask=None,
-                dropout_p=0.0,
-                is_causal=causal,
-                scale=softmax_scale,
-            )
-            # (1, h, s, d) → (s, h, d)
-            outs.append(out_i.squeeze(0).transpose(0, 1))
+        for i, lq in enumerate([len(x) for x in q_list]):
+            outs.append(out_pad[i, :lq])
+            
         return torch.cat(outs, dim=0).contiguous()
 
     return _sdpa_wrapper

@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://microsoft.github.io/Mage/cowork/"><img alt="Project Page" src="https://img.shields.io/badge/%F0%9F%8C%90-Project%20Page-blue" height="22" /></a>
-  <a href="https://github.com/microsoft/Mage/blob/main/assets/mage_vl_cowork_tech_report.pdf"><img alt="Technical Report" src="https://img.shields.io/badge/Technical%20Report-PDF-b31b1b" height="22" /></a>
+  <a href="https://arxiv.org/abs/2610.40747"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2610.40747-b31b1b" height="22" /></a>
   <a href="https://github.com/microsoft/Mage/tree/main/mage_vl_cowork"><img src="https://img.shields.io/badge/Code-GitHub-181717?logo=github" alt="GitHub" height="22"></a>
   <a href="https://huggingface.co/microsoft/Mage-VL-Cowork"><img alt="Mage-VL-Cowork" src="https://img.shields.io/badge/%F0%9F%A4%97-Mage--VL--Cowork-yellow" height="22" /></a>
   <a href="https://huggingface.co/microsoft/Mage-VL"><img alt="Mage-VL" src="https://img.shields.io/badge/%F0%9F%A4%97-Mage--VL-yellow" height="22" /></a>
@@ -493,9 +493,9 @@ See [`osworld_eval/README.md`](osworld_eval/README.md) for detailed component do
 
 ```bibtex
 @article{zhang2026magecowork,
-  title={Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use from Evolved Harnesses},
+  title={Mage-VL-Cowork: A Full Training Recipe to Learn Hybrid Computer Use From Evolved Harnesses},
   author={Zhang, Xiaoyi and Wang, Haoqing and Zhang, Xinjie and Ming, Xiang and Wang, Xing and Yang, Senqiao and Zhang, Kaichen and Jia, Zhaoyang and Tan, Andong and Wang, Xinjiang and Guo, Jinghao and Shen, Yifei and Li, Xiao and Zhang, Peng and Guo, Xun and Li, Jiahao and Zheng, Shicheng and Wang, Jinglu and Guo, Zongyu and Xie, Wenxuan and Li, Bin and Lu, Yan},
-  journal={arXiv preprint},
+  journal={arXiv preprint arXiv:2610.40747},
   year={2026}
 }
 ```

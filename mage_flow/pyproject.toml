@@ -16,7 +16,7 @@ dependencies = [
     "diffusers>=0.37.0",
     # transformers 5.6.0 removed the `input_embeds` kwarg of `create_causal_mask`
     # that the text encoder relies on; keep below it until the call is migrated.
-    "transformers>=5.3.0,<5.6",
+    "transformers>=5.3.0,<5.11",
     "accelerate>=1.0.0",
     "einops>=0.8.0",
     "pydantic>=2.0",

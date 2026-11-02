@@ -38,7 +38,7 @@
 
 ---
 
-**Mage** is a family of lightweight, research-friendly multimodal models built at a fixed **4B-parameter** budget. It is designed to make advanced visual **understanding** and **generation** accessible for controlled experiments, post-training research, and vertical-domain applications under realistic compute budgets.
+**Mage** is a family of lightweight, research-friendly multimodal models from Microsoft, built at a fixed **4B-parameter** budget: **Mage-VL** for image and video understanding, **Mage-Flow** for image generation and editing, and **Mage-VL-Cowork** for hybrid computer use with GUI, code, and terminal actions. It is designed to make advanced visual **understanding**, **generation**, and **computer use** accessible for controlled experiments, post-training research, and vertical-domain applications under realistic compute budgets.
 
 The family is organized around a shared **codec-aligned efficiency** philosophy — *spend representation capacity where the signal is* — applied to both the understanding and the generation side:
 
@@ -168,5 +168,6 @@ Licensing is per-model:
 | Model | License |
 | :--- | :--- |
 | **Mage-VL** | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) |
+| **Mage-VL-Cowork** | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) |
 | **Mage-ViT** | [MIT](LICENSE) |
 | **Mage-Flow** | [MIT](LICENSE) |

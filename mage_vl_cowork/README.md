@@ -76,10 +76,10 @@ Rather than learning hybrid routing as a workaround for weak visual grounding, *
 | Stage | Training Focus | Supervision Scale | Compute Share | Nominal Compute |
 | :--- | :--- | :---: | :---: | :---: |
 | **1. GUI-Oriented Midtraining** | Visual grounding, chain-of-thought reasoning, and schema-compliant tool calling (with prompt decoupling, same-image target deduplication, and selective `<think>`-body masking) | 24.6B tokens / epoch (751K packed 32K bins) | 15.2% | 1.18 ZFLOPs |
-| **2. GUI Agent SFT** | Multi-step desktop & web workflows through screenshots, mouse, and keyboard | 156.7K trajectories (32.2B tokens / epoch) | 33.6% | 1.55 ZFLOPs |
-| **3. Coding & Terminal SFT** | Repository software engineering + programmatic desktop file/state manipulation | 563.7K trajectories (5.7B tokens / epoch) | 19.9% | 0.27 ZFLOPs |
+| **2. GUI Agent SFT** | Multi-step desktop & web workflows through screenshots, mouse, and keyboard | 156.7K trajectories (32.2B tokens / epoch) | 19.9% | 1.55 ZFLOPs |
+| **3. Coding & Terminal SFT** | Repository software engineering + programmatic desktop file/state manipulation | 563.7K trajectories (5.7B tokens / epoch) | 3.5% | 0.27 ZFLOPs |
 | **4. Hybrid CUA SFT** | Turn-level channel routing and verification between `computer_use` and `bash` | 318.8K trajectories (45.1B tokens / epoch) | 27.8% | 2.17 ZFLOPs |
-| **5. Online Hybrid RL** | Asynchronous GRPO with verifiable task rewards, frontier task sampling, bounded policy lag ($\le 3$ updates), and truncated importance sampling ($\text{TIS} \le 2.0$) | 1,988 verifiable tasks (768 episode slots / update) | 3.5% | 2.62 ZFLOPs |
+| **5. Online Hybrid RL** | Asynchronous GRPO with verifiable task rewards, frontier task sampling, bounded policy lag ($\le 3$ updates), and truncated importance sampling ($\text{TIS} \le 2.0$) | 1,988 verifiable tasks (768 episode slots / update) | 33.6% | 2.62 ZFLOPs |
 
 ### 4. Asymmetric Working Memory
 Long-horizon desktop tasks face a tension between context budget and visual state awareness. At step $t$, **Mage-VL-Cowork** conditions on an asymmetric sliding window:
@@ -140,7 +140,7 @@ Across the downstream curriculum, **Mage-VL-Cowork** climbs by **+20.44 percenta
 | :--- | :---: | :---: | :---: | :---: |
 | **Stage 2: GUI Agent SFT** | 45.56 | 25.36 | 6,401 | 4,549 |
 | **Stage 4: Hybrid CUA SFT** | 55.84 (+10.28 pp) | 21.57 (−14.9%) | 7,374 | 3,328 |
-| **Stage 5: Online Hybrid RL (`Mage-VL-Cowork`)** | **66.04 (+20.48 pp)** | **18.77 (−26.0%)** | **5,499 (−25.4% vs. SFT)** | **2,482 (−25.4% vs. SFT)** |
+| **Stage 5: Online Hybrid RL (`Mage-VL-Cowork`)** | **66.0 (+20.44 pp)** | **18.77 (−26.0%)** | **5,499 (−25.4% vs. SFT)** | **2,482 (−25.4% vs. SFT)** |
 | *Reference: GPT-5.4-mini (xhigh)* | *69.57* | *18.24* | *12,397* | *11,631* |
 
 - **RL sharpens both accuracy and token economy:** Relative to Hybrid SFT, Online Hybrid RL adds **+10.16 pp** while cutting mean model calls by **13.0%** (21.57 → 18.77) and output tokens by **25.4%** (7,374 → 5,499).
